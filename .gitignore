@@ -27,6 +27,9 @@ logs
 *.log
 .pnpm-debug.log*
 
+# Reports
+reports
+
 # System Files
 .DS_Store
 Thumbs.db

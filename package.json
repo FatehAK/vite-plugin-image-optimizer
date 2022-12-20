@@ -2,11 +2,19 @@
   "name": "vite-plugin-image-optimizer",
   "version": "1.0.0",
   "author": "fatehak",
-  "main": "dist/index.js",
+  "main": "./dist/index.umd.cjs",
+  "module": "./dist/index.js",
   "license": "MIT",
   "files": [
     "dist"
   ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.umd.cjs"
+    }
+  },
+  "source": "src/index.js",
   "description": "A Vite plugin to optimize your image assets using Sharp.js and SVGO",
   "repository": {
     "type": "git",
@@ -40,10 +48,13 @@
     "lint-staged": "lint-staged",
     "cz": "czg"
   },
+  "dependencies": {
+    "sharp": "^0.31.2",
+    "svgo": "^3.0.2"
+  },
   "devDependencies": {
     "@commitlint/cli": "^17.3.0",
     "@rollup/plugin-strip": "^3.0.1",
-    "@vitejs/plugin-legacy": "^3.0.1",
     "concurrently": "^7.6.0",
     "czg": "1.4.1",
     "eslint": "^8.29.0",
@@ -59,7 +70,7 @@
     "prettier": "^2.8.1",
     "rimraf": "^3.0.2",
     "rollup-plugin-visualizer": "^5.8.3",
-    "vite": "^4.0.0"
+    "vite": "^4.0.2"
   },
   "peerDependencies": {
     "vite": ">=4.0.0"
