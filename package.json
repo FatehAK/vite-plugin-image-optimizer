@@ -14,7 +14,6 @@
       "require": "./dist/index.umd.cjs"
     }
   },
-  "source": "src/index.js",
   "description": "A Vite plugin to optimize your image assets using Sharp.js and SVGO",
   "repository": {
     "type": "git",
@@ -49,6 +48,8 @@
     "cz": "czg"
   },
   "dependencies": {
+    "chalk": "4.1.2",
+    "pathe": "^1.0.0",
     "sharp": "^0.31.2",
     "svgo": "^3.0.2"
   },
