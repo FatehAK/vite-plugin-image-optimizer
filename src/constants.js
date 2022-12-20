@@ -1,10 +1,10 @@
 export const VITE_PLUGIN_NAME = 'vite-plugin-image-optimizer';
-export const svgRegex = /\.svg$/;
-export const imageRegex = /\.(png|jpeg|jpg|gif|webp|avif|svg)$/i;
-
-export const defaultOptions = {
+export const DEFAULT_OPTIONS = {
   logStats: true,
   includePublic: true,
+  exclude: undefined,
+  include: undefined,
+  test: /\.(jpe?g|png|gif|tiff|webp|svg|avif)$/i,
   svg: {
     multipass: true,
     plugins: [
@@ -43,7 +43,11 @@ export const defaultOptions = {
     // https://sharp.pixelplumbing.com/api-output#jpeg
     quality: 100,
   },
-  // gif does not support lossless compression at all
+  tiff: {
+    // https://sharp.pixelplumbing.com/api-output#tiff
+    quality: 100,
+  },
+  // gif does not support lossless compression
   // https://sharp.pixelplumbing.com/api-output#gif
   gif: {},
   webp: {

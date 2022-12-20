@@ -1,13 +1,15 @@
 import { basename, extname, join, sep } from 'pathe';
+// eslint-disable-next-line import/no-unresolved
+import { filename } from 'pathe/utils';
 import fs from 'fs-extra';
 import chalk from 'chalk';
 import { optimize } from 'svgo';
 import sharp from 'sharp';
 import { merge, readAllFiles } from './utils';
-import { VITE_PLUGIN_NAME, svgRegex, imageRegex, defaultOptions } from './constants';
+import { VITE_PLUGIN_NAME, DEFAULT_OPTIONS } from './constants';
 
 export default function (optionsParam = {}) {
-  const options = merge(optionsParam, defaultOptions);
+  const options = merge(optionsParam, DEFAULT_OPTIONS);
 
   let rootConfig, outputPath, publicDir;
 
@@ -32,7 +34,7 @@ export default function (optionsParam = {}) {
 
   const processFile = async (filePath, buffer) => {
     try {
-      const engine = svgRegex.test(filePath) ? applySVGO : applySharp;
+      const engine = /\.svg$/.test(filePath) ? applySVGO : applySharp;
       const newBuffer = await engine(filePath, buffer);
 
       const newSize = newBuffer.byteLength;
@@ -66,12 +68,25 @@ export default function (optionsParam = {}) {
     },
     generateBundle: async (_, bundler) => {
       const files = [];
-
-      Object.keys(bundler).forEach(filePath => {
-        if (imageRegex.test(filePath)) {
-          files.push(filePath);
-        }
-      });
+      const allFiles = Object.keys(bundler);
+      if (options.include) {
+        // include takes higher priority than `test` and `exclude`
+        allFiles.forEach(filePath => {
+          const fileName = bundler[filePath].name;
+          if (isIncludedFile(fileName, options.include)) {
+            files.push(filePath);
+          }
+        });
+      } else {
+        allFiles.forEach(filePath => {
+          if (options.test.test(filePath)) {
+            const fileName = bundler[filePath].name;
+            if (!isExcludedFile(fileName, options.exclude)) {
+              files.push(filePath);
+            }
+          }
+        });
+      }
 
       if (files.length > 0) {
         const handles = files.map(async filePath => {
@@ -81,20 +96,32 @@ export default function (optionsParam = {}) {
             bundler[filePath].source = content;
           }
         });
-
         await Promise.all(handles).catch(e => rootConfig.logger.error(e));
       }
     },
     async closeBundle() {
       if (publicDir && options.includePublic) {
         const files = [];
-
         // find static images in the original static folder
-        readAllFiles(publicDir).forEach(filePath => {
-          if (imageRegex.test(filePath)) {
-            files.push(filePath);
-          }
-        });
+        const allFiles = readAllFiles(publicDir);
+        if (options.include) {
+          // include takes higher priority than `test` and `exclude`
+          allFiles.forEach(filePath => {
+            const fileName = filename(filePath) + extname(filePath);
+            if (isIncludedFile(fileName, options.include)) {
+              files.push(filePath);
+            }
+          });
+        } else {
+          allFiles.forEach(filePath => {
+            if (options.test.test(filePath)) {
+              const fileName = filename(filePath) + extname(filePath);
+              if (!isExcludedFile(fileName, options.exclude)) {
+                files.push(filePath);
+              }
+            }
+          });
+        }
 
         if (files.length > 0) {
           const handles = files.map(async publicFilePath => {
@@ -117,7 +144,6 @@ export default function (optionsParam = {}) {
               mtimeCache.set(filePath, Date.now());
             }
           });
-
           await Promise.all(handles).catch(e => rootConfig.logger.error(e));
         }
       }
@@ -126,6 +152,30 @@ export default function (optionsParam = {}) {
       }
     },
   };
+}
+
+function isIncludedFile(fileName, include) {
+  return checkFileMatch(fileName, include);
+}
+
+function isExcludedFile(fileName, exclude) {
+  return checkFileMatch(fileName, exclude);
+}
+
+function checkFileMatch(fileName, matcher) {
+  const isString = Object.prototype.toString.call(matcher) === '[object String]';
+  const isRegex = Object.prototype.toString.call(matcher) === '[object RegExp]';
+  const isArray = Array.isArray(matcher);
+  if (isString) {
+    return fileName === matcher;
+  }
+  if (isRegex) {
+    return matcher.test(fileName);
+  }
+  if (isArray) {
+    return matcher.includes(fileName);
+  }
+  return false;
 }
 
 function logOptimizationStats(rootConfig, sizesMap) {
