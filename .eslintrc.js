@@ -18,6 +18,7 @@ module.exports = {
   rules: {
     'sonarjs/no-duplicate-string': 'off',
     'sonarjs/no-nested-template-literals': 'off',
+    'sonarjs/cognitive-complexity': 'off',
   },
   plugins: ['only-warn', 'import', 'sonarjs', 'promise'],
 };

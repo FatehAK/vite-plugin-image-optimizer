@@ -1,11 +1,14 @@
-import { basename } from 'pathe';
+import { basename, join, sep } from 'pathe';
+import fs from 'fs-extra';
 import chalk from 'chalk';
 import { optimize } from 'svgo';
+import { readAllFiles } from './utils';
 
 const VITE_PLUGIN_NAME = 'vite-plugin-image-optimizer';
 const fileRegex = /\.svg$/;
+
 const defaultOpts = {
-  stats: true,
+  logStats: true,
   svgoConfig: {
     multipass: true,
     plugins: [
@@ -35,10 +38,38 @@ const defaultOpts = {
 };
 
 export default function (options = {}) {
-  let rootConfig;
+  const { logStats = defaultOpts.logStats, svgoConfig = defaultOpts.svgoConfig } = options;
 
-  const { stats = defaultOpts.stats, svgoConfig = defaultOpts.svgoConfig } = options;
+  let rootConfig, outputPath, publicDir;
+
   const sizesMap = new Map();
+  const mtimeCache = new Map();
+
+  const processFile = async (filePath, buffer) => {
+    try {
+      const result = optimize(buffer.toString(), {
+        path: filePath,
+        ...svgoConfig,
+      });
+
+      const newBuffer = Buffer.from(result.data);
+      const newSize = newBuffer.byteLength;
+      const oldSize = buffer.byteLength;
+      const skipWrite = newSize >= oldSize;
+      // save the sizes of the old and new image
+      sizesMap.set(filePath, {
+        size: newSize / 1024,
+        oldSize: oldSize / 1024,
+        ratio: Math.floor(100 * (newSize / oldSize - 1)),
+        skipWrite,
+      });
+
+      return { content: newBuffer, skipWrite };
+    } catch (error) {
+      rootConfig.logger.error(`${error.name} for '${filePath}' - ${error.reason}`);
+      return undefined;
+    }
+  };
 
   return {
     name: VITE_PLUGIN_NAME,
@@ -46,34 +77,12 @@ export default function (options = {}) {
     apply: 'build',
     configResolved(c) {
       rootConfig = c;
+      outputPath = c.build.outDir;
+      if (typeof c.publicDir === 'string') {
+        publicDir = c.publicDir;
+      }
     },
     generateBundle: async (op, bundler) => {
-      const processFile = async (filePath, buffer) => {
-        try {
-          const result = optimize(buffer.toString(), {
-            path: filePath,
-            ...svgoConfig,
-          });
-
-          const newBuffer = Buffer.from(result.data);
-          const newSize = newBuffer.byteLength;
-          const oldSize = buffer.byteLength;
-          const skipWrite = newSize >= oldSize;
-          // save the sizes of the old and new image
-          sizesMap.set(filePath, {
-            size: newSize / 1024,
-            oldSize: oldSize / 1024,
-            ratio: Math.floor(100 * (newSize / oldSize - 1)),
-            skipWrite,
-          });
-
-          return { buffer: newBuffer, skipWrite };
-        } catch (error) {
-          rootConfig.logger.error(`${error.name} for '${filePath}' - ${error.reason}`);
-          return undefined;
-        }
-      };
-
       const files = [];
 
       Object.keys(bundler).forEach(filePath => {
@@ -83,19 +92,55 @@ export default function (options = {}) {
       });
 
       if (files.length > 0) {
-        await Promise.all(
-          files.map(async filePath => {
-            const source = bundler[filePath].source;
-            const { buffer, skipWrite } = await processFile(filePath, source);
-            if (buffer?.length > 0 && !skipWrite) {
-              bundler[filePath].source = buffer;
-            }
-          })
-        );
+        const handles = files.map(async filePath => {
+          const source = bundler[filePath].source;
+          const { content, skipWrite } = await processFile(filePath, source);
+          if (content?.length > 0 && !skipWrite) {
+            bundler[filePath].source = content;
+          }
+        });
+        await Promise.all(handles);
       }
     },
     async closeBundle() {
-      if (stats) logOptimizationStats(rootConfig, sizesMap);
+      if (publicDir) {
+        const files = [];
+
+        // find static images in the original static folder
+        readAllFiles(publicDir).forEach(filePath => {
+          if (fileRegex.test(filePath)) {
+            files.push(filePath);
+          }
+        });
+
+        if (files.length > 0) {
+          const handles = files.map(async publicFilePath => {
+            // convert the path to the output folder
+            const filePath = publicFilePath.replace(publicDir + sep, '');
+            const fullFilePath = join(outputPath, filePath);
+
+            if (fs.existsSync(fullFilePath) === false) {
+              return;
+            }
+            const { mtimeMs } = await fs.stat(fullFilePath);
+            if (mtimeMs <= (mtimeCache.get(filePath) || 0)) {
+              return;
+            }
+
+            const buffer = await fs.readFile(fullFilePath);
+            const { content, skipWrite } = await processFile(filePath, buffer);
+            if (content?.length > 0 && !skipWrite) {
+              await fs.writeFile(fullFilePath, content);
+              mtimeCache.set(filePath, Date.now());
+            }
+          });
+
+          await Promise.all(handles);
+        }
+      }
+      if (logStats) {
+        logOptimizationStats(rootConfig, sizesMap);
+      }
     },
   };
 }
