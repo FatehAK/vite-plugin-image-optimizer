@@ -1,58 +1,40 @@
-import { basename, join, sep } from 'pathe';
+import { basename, extname, join, sep } from 'pathe';
 import fs from 'fs-extra';
 import chalk from 'chalk';
 import { optimize } from 'svgo';
-import { readAllFiles } from './utils';
+import sharp from 'sharp';
+import { merge, readAllFiles } from './utils';
+import { VITE_PLUGIN_NAME, svgRegex, imageRegex, defaultOptions } from './constants';
 
-const VITE_PLUGIN_NAME = 'vite-plugin-image-optimizer';
-const fileRegex = /\.svg$/;
-
-const defaultOpts = {
-  logStats: true,
-  svgoConfig: {
-    multipass: true,
-    plugins: [
-      {
-        name: 'preset-default',
-        params: {
-          overrides: {
-            cleanupNumericValues: false,
-            removeViewBox: false, // https://github.com/svg/svgo/issues/1128
-          },
-          cleanupIDs: {
-            minify: false,
-            remove: false,
-          },
-          convertPathData: false,
-        },
-      },
-      'sortAttrs',
-      {
-        name: 'addAttributesToSVGElement',
-        params: {
-          attributes: [{ xmlns: 'http://www.w3.org/2000/svg' }],
-        },
-      },
-    ],
-  },
-};
-
-export default function (options = {}) {
-  const { logStats = defaultOpts.logStats, svgoConfig = defaultOpts.svgoConfig } = options;
+export default function (optionsParam = {}) {
+  const options = merge(optionsParam, defaultOptions);
 
   let rootConfig, outputPath, publicDir;
 
   const sizesMap = new Map();
   const mtimeCache = new Map();
 
+  const applySVGO = async (filePath, buffer) => {
+    return Buffer.from(
+      optimize(buffer, {
+        path: filePath,
+        ...options.svg,
+      }).data
+    );
+  };
+
+  const applySharp = async (filePath, buffer) => {
+    const extName = extname(filePath).replace('.', '');
+    return await sharp(buffer, { animated: extName === 'gif' })
+      .toFormat(extName, options[extName.toLowerCase()])
+      .toBuffer();
+  };
+
   const processFile = async (filePath, buffer) => {
     try {
-      const result = optimize(buffer.toString(), {
-        path: filePath,
-        ...svgoConfig,
-      });
+      const engine = svgRegex.test(filePath) ? applySVGO : applySharp;
+      const newBuffer = await engine(filePath, buffer);
 
-      const newBuffer = Buffer.from(result.data);
       const newSize = newBuffer.byteLength;
       const oldSize = buffer.byteLength;
       const skipWrite = newSize >= oldSize;
@@ -66,8 +48,8 @@ export default function (options = {}) {
 
       return { content: newBuffer, skipWrite };
     } catch (error) {
-      rootConfig.logger.error(`${error.name} for '${filePath}' - ${error.reason}`);
-      return undefined;
+      rootConfig.logger.error(`'${filePath}' - failed optimization`);
+      return {};
     }
   };
 
@@ -82,11 +64,11 @@ export default function (options = {}) {
         publicDir = c.publicDir;
       }
     },
-    generateBundle: async (op, bundler) => {
+    generateBundle: async (_, bundler) => {
       const files = [];
 
       Object.keys(bundler).forEach(filePath => {
-        if (fileRegex.test(filePath)) {
+        if (imageRegex.test(filePath)) {
           files.push(filePath);
         }
       });
@@ -99,16 +81,17 @@ export default function (options = {}) {
             bundler[filePath].source = content;
           }
         });
-        await Promise.all(handles);
+
+        await Promise.all(handles).catch(e => rootConfig.logger.error(e));
       }
     },
     async closeBundle() {
-      if (publicDir) {
+      if (publicDir && options.includePublic) {
         const files = [];
 
         // find static images in the original static folder
         readAllFiles(publicDir).forEach(filePath => {
-          if (fileRegex.test(filePath)) {
+          if (imageRegex.test(filePath)) {
             files.push(filePath);
           }
         });
@@ -135,10 +118,10 @@ export default function (options = {}) {
             }
           });
 
-          await Promise.all(handles);
+          await Promise.all(handles).catch(e => rootConfig.logger.error(e));
         }
       }
-      if (logStats) {
+      if (options.logStats) {
         logOptimizationStats(rootConfig, sizesMap);
       }
     },
@@ -169,8 +152,8 @@ function logOptimizationStats(rootConfig, sizesMap) {
         ' ' +
         chalk.dim(
           skipWrite
-            ? `${chalk.yellow.bold('skipped')} ${size.toFixed(2)}kb >= original: ${oldSize.toFixed(2)}kb`
-            : `${oldSize.toFixed(2)}kb / optimized: ${size.toFixed(2)}kb`
+            ? `${chalk.yellow.bold('skipped')} original: ${oldSize.toFixed(2)}kb <= optimized: ${size.toFixed(2)}kb`
+            : `${oldSize.toFixed(2)}kb -> ${size.toFixed(2)}kb`
         )
     );
   });

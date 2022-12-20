@@ -1,6 +1,26 @@
 import fs from 'fs-extra';
 import { join } from 'pathe';
 
+function deepClone(src) {
+  if (typeof src !== 'object' || src === null) return src;
+  const target = Array.isArray(src) ? [] : {};
+  for (const key in src) {
+    const value = src[key];
+    target[key] = deepClone(value);
+  }
+  return target;
+}
+
+export function merge(src, target) {
+  const clone = deepClone(src);
+  for (const key in target) {
+    if (clone[key] === undefined) {
+      clone[key] = target[key];
+    }
+  }
+  return clone;
+}
+
 export function readAllFiles(root) {
   let resultArr = [];
   try {
