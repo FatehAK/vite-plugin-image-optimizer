@@ -1,0 +1,71 @@
+{
+  "name": "vite-plugin-image-optimizer",
+  "version": "1.0.0",
+  "author": "fatehak",
+  "main": "dist/index.js",
+  "license": "MIT",
+  "files": [
+    "dist"
+  ],
+  "description": "A Vite plugin to optimize your image assets using Sharp.js and SVGO",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/FatehAK/vite-plugin-image-optimizer"
+  },
+  "bugs": {
+    "url": "https://github.com/FatehAK/vite-plugin-image-optimizer/issues"
+  },
+  "homepage": "https://github.com/FatehAK/vite-plugin-image-optimizer#readme",
+  "keywords": [
+    "vite",
+    "vite-plugin",
+    "image compression",
+    "image optimization",
+    "svgo",
+    "sharp.js"
+  ],
+  "scripts": {
+    "start": "vite",
+    "build:dev": "vite build --mode development",
+    "build:prod": "vite build",
+    "analyze": "open ./reports/build-stats.html",
+    "clean": "pnpm rimraf reports dist node_modules/.vite node_modules/.cache",
+    "lint": "concurrently -g -n \"prettier,eslint\" -c \"bgGreen.bold,bgBlue.bold\" \"pnpm prettier-check\" \"pnpm eslint-check\"",
+    "lint:fix": "pnpm prettier-fix && pnpm eslint-fix",
+    "prettier-check": "prettier --loglevel warn --cache --cache-strategy content --cache-location ./node_modules/.cache/.prettiercache --check .",
+    "prettier-fix": "prettier --loglevel warn --cache --cache-strategy content --cache-location ./node_modules/.cache/.prettiercache --write .",
+    "eslint-check": "eslint --max-warnings=25 --format=pretty --cache --cache-strategy content --cache-location ./node_modules/.cache/.eslintcache '{**/*,*}.{js}'",
+    "eslint-fix": "pnpm eslint-check --fix",
+    "prepare": "husky install",
+    "lint-staged": "lint-staged",
+    "cz": "czg"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^17.3.0",
+    "@rollup/plugin-strip": "^3.0.1",
+    "@vitejs/plugin-legacy": "^3.0.1",
+    "concurrently": "^7.6.0",
+    "czg": "1.4.1",
+    "eslint": "^8.29.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-config-semistandard": "^17.0.0",
+    "eslint-formatter-pretty": "^4.1.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-only-warn": "^1.1.0",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-sonarjs": "^0.17.0",
+    "husky": "^8.0.2",
+    "lint-staged": "^13.1.0",
+    "prettier": "^2.8.1",
+    "rimraf": "^3.0.2",
+    "rollup-plugin-visualizer": "^5.8.3",
+    "vite": "^4.0.0"
+  },
+  "peerDependencies": {
+    "vite": ">=4.0.0"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "packageManager": "pnpm@7.18.2"
+}

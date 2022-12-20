@@ -1,0 +1,32 @@
+
+# ide
+.idea
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Dependency directories
+node_modules
+.pnp.*
+.pnpm-store/
+
+# compiled output
+/dist
+/build
+
+# Logs
+logs
+*.log
+.pnpm-debug.log*
+
+# System Files
+.DS_Store
+Thumbs.db
