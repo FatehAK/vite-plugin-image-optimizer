@@ -1,0 +1,36 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:base"],
+  "labels": ["dependencies"],
+  "enabledManagers": ["npm"],
+  "rangeStrategy": "bump",
+  "commitMessagePrefix": "chore(deps): 🔨 ",
+  "branchPrefix": "renovate-",
+  "dependencyDashboard": true,
+  "dependencyDashboardAutoclose": true,
+  "configMigration": true,
+  "automerge": true,
+  "automergeType": "branch",
+  "automergeStrategy": "rebase",
+  "platformCommit": true,
+  "lockFileMaintenance": {
+    "enabled": true
+  },
+  "rebaseWhen": "behind-base-branch",
+  "patch": {
+    "groupName": "non-major dependencies",
+    "groupSlug": "minor-patch"
+  },
+  "minor": {
+    "groupName": "non-major dependencies",
+    "groupSlug": "minor-patch"
+  },
+  "major": {
+    "automerge": false,
+    "dependencyDashboardApproval": true,
+    "labels": ["dependencies", "breaking"]
+  },
+  "vulnerabilityAlerts": {
+    "labels": ["security"]
+  }
+}
