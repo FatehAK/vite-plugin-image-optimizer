@@ -4,7 +4,7 @@
   "labels": ["dependencies"],
   "enabledManagers": ["npm"],
   "rangeStrategy": "bump",
-  "commitMessagePrefix": "chore(deps): 🔨 ",
+  "commitMessagePrefix": "chore(deps): ",
   "dependencyDashboard": true,
   "dependencyDashboardAutoclose": true,
   "configMigration": true,
@@ -27,7 +27,7 @@
   "major": {
     "automerge": false,
     "dependencyDashboardApproval": true,
-    "commitMessagePrefix": "chore(deps-major): 🔨 ",
+    "commitMessagePrefix": "chore(deps-major): ",
     "labels": ["dependencies", "breaking"]
   },
   "vulnerabilityAlerts": {
