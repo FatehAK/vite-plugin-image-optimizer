@@ -36,26 +36,6 @@
   },
   "packageRules": [
     {
-      "matchPackagePatterns": ["^eslint"],
-      "groupName": "eslint packages"
-    },
-    {
-      "matchPackagePatterns": ["^stylelint"],
-      "groupName": "stylelint packages"
-    },
-    {
-      "matchPackagePatterns": ["^rollup", "^@rollup"],
-      "groupName": "rollup plugins"
-    },
-    {
-      "matchPackagePatterns": ["^vite-", "^@vitejs"],
-      "groupName": "vite plugins"
-    },
-    {
-      "matchPackagePatterns": ["^postcss-"],
-      "groupName": "postcss plugins"
-    },
-    {
       "matchPackageNames": ["node"],
       "enabled": false
     },
