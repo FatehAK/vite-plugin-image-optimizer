@@ -56,10 +56,10 @@
   },
   "devDependencies": {
     "@commitlint/cli": "^17.3.0",
-    "@rollup/plugin-strip": "^3.0.1",
+    "@rollup/plugin-strip": "^3.0.2",
     "concurrently": "^7.6.0",
     "czg": "1.4.1",
-    "eslint": "^8.29.0",
+    "eslint": "^8.30.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-config-semistandard": "^17.0.0",
     "eslint-formatter-pretty": "^4.1.0",
@@ -72,7 +72,7 @@
     "prettier": "^2.8.1",
     "rimraf": "^3.0.2",
     "rollup-plugin-visualizer": "^5.8.3",
-    "vite": "^4.0.2"
+    "vite": "^4.0.3"
   },
   "peerDependencies": {
     "vite": ">=4"
@@ -80,5 +80,5 @@
   "engines": {
     "node": ">=18"
   },
-  "packageManager": "pnpm@7.18.2"
+  "packageManager": "pnpm@7.19.0"
 }
