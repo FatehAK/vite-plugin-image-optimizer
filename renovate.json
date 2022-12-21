@@ -56,7 +56,7 @@
       "groupName": "postcss plugins"
     },
     {
-      "packageNames": ["node"],
+      "matchPackageNames": ["node"],
       "enabled": false
     },
     {
