@@ -5,7 +5,6 @@
   "enabledManagers": ["npm"],
   "rangeStrategy": "bump",
   "commitMessagePrefix": "chore(deps): 🔨 ",
-  "branchPrefix": "renovate-",
   "dependencyDashboard": true,
   "dependencyDashboardAutoclose": true,
   "configMigration": true,

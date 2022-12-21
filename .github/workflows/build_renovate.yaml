@@ -1,0 +1,69 @@
+on:
+  push:
+    branches:
+      - 'renovate/**'
+
+name: build_renovate
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+
+      - name: Setup Node and pnpm-store cache
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'pnpm'
+
+      - name: Dump versions
+        run: |
+          echo "node: $(node -v)"
+          echo "npm: $(npm -v)"
+          echo "pnpm: $(pnpm -v)"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Setup script cache
+        uses: actions/cache@v3
+        with:
+          path: node_modules/.cache
+          key: script-cache-${{ hashFiles('**/pnpm-lock.yaml') }}-run-id-${{ github.run_id }}
+          restore-keys: script-cache-${{ hashFiles('**/pnpm-lock.yaml') }}-run-id-
+
+      - name: Run lint
+        run: pnpm lint
+
+  build:
+    name: Build
+    needs: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+
+      - name: Setup Node and pnpm-store cache
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'pnpm'
+
+      - name: Dump versions
+        run: |
+          echo "node: $(node -v)"
+          echo "npm: $(npm -v)"
+          echo "pnpm: $(pnpm -v)"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm build:prod
