@@ -21,7 +21,7 @@ specifiers:
   prettier: ^2.8.1
   rimraf: ^3.0.2
   rollup-plugin-visualizer: ^5.8.3
-  sharp: ^0.31.2
+  sharp: ^0.31.3
   svgo: ^3.0.2
   vite: ^4.0.3
 
@@ -29,7 +29,7 @@ dependencies:
   chalk: 4.1.2
   fs-extra: 11.1.0
   pathe: 1.0.0
-  sharp: 0.31.2
+  sharp: 0.31.3
   svgo: 3.0.2
 
 devDependencies:
@@ -2933,8 +2933,8 @@ packages:
     dependencies:
       lru-cache: 6.0.0
 
-  /sharp/0.31.2:
-    resolution: {integrity: sha512-DUdNVEXgS5A97cTagSLIIp8dUZ/lZtk78iNVZgHdHbx1qnQR7JAHY0BnXnwwH39Iw+VKhO08CTYhIg0p98vQ5Q==}
+  /sharp/0.31.3:
+    resolution: {integrity: sha512-XcR4+FCLBFKw1bdB+GEhnUNXNXvnt0tDo4WsBsraKymuo/IAuPuCBVAL2wIkUw2r/dwFW5Q5+g66Kwl2dgDFVg==}
     engines: {node: '>=14.15.0'}
     requiresBuild: true
     dependencies:
