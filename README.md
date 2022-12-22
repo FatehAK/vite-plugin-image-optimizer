@@ -44,6 +44,20 @@ Supports `Vite >=3` and `Node >=14`
 npm install vite-plugin-image-optimizer --save-dev
 ```
 
+> **Info**
+>
+> `sharp` and `svgo` don't come installed as part of the package. You will have to install them manually and add it as a dev dependency. This is a design decision so you can choose to skip installing
+> `sharp`
+> if you only want to optimize svg assets using `svgo` and vice versa.
+>
+> ```console
+> npm install sharp --save-dev
+> ```
+>
+> ```console
+> npm install svgo --save-dev
+> ```
+
 ### Usage
 
 ```js
