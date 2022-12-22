@@ -2,16 +2,16 @@
   "name": "vite-plugin-image-optimizer",
   "version": "1.0.0",
   "author": "fatehak",
-  "main": "./dist/index.umd.cjs",
-  "module": "./dist/index.js",
-  "license": "MIT",
   "files": [
     "dist"
   ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "license": "MIT",
   "exports": {
     ".": {
-      "import": "./dist/index.js",
-      "require": "./dist/index.umd.cjs"
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
     }
   },
   "description": "A Vite plugin to optimize your image assets using Sharp.js and SVGO",
@@ -35,6 +35,7 @@
     "start": "vite",
     "build:dev": "vite build --mode development",
     "build:prod": "vite build",
+    "tarball": "pnpm pack --pack-destination ./tar",
     "analyze": "open ./reports/build-stats.html",
     "clean": "pnpm rimraf reports dist node_modules/.vite node_modules/.cache",
     "lint": "concurrently -g -n \"prettier,eslint\" -c \"bgGreen.bold,bgBlue.bold\" \"pnpm prettier-check\" \"pnpm eslint-check\"",
@@ -48,11 +49,9 @@
     "cz": "czg"
   },
   "dependencies": {
+    "ansi-colors": "^4.1.3",
     "chalk": "4.1.2",
-    "fs-extra": "^11.1.0",
-    "pathe": "^1.0.0",
-    "sharp": "^0.31.3",
-    "svgo": "^3.0.2"
+    "pathe": "^1.0.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.3.0",
@@ -72,13 +71,15 @@
     "prettier": "^2.8.1",
     "rimraf": "^3.0.2",
     "rollup-plugin-visualizer": "^5.8.3",
+    "sharp": "^0.31.3",
+    "svgo": "^3.0.2",
     "vite": "^4.0.3"
   },
   "peerDependencies": {
-    "vite": ">=4"
+    "vite": ">=3"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=14"
   },
   "packageManager": "pnpm@7.19.0"
 }

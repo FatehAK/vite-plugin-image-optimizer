@@ -1,14 +1,13 @@
 import { basename, extname, join, sep } from 'pathe';
 // eslint-disable-next-line import/no-unresolved
 import { filename } from 'pathe/utils';
-import fs from 'fs-extra';
-import chalk from 'chalk';
-import { optimize } from 'svgo';
-import sharp from 'sharp';
+import fs from 'fs';
+import fsp from 'fs/promises';
+import ansi from 'ansi-colors';
 import { merge, readAllFiles } from './utils';
 import { VITE_PLUGIN_NAME, DEFAULT_OPTIONS } from './constants';
 
-export default function (optionsParam = {}) {
+function ViteImageOptimizer(optionsParam = {}) {
   const options = merge(optionsParam, DEFAULT_OPTIONS);
 
   let rootConfig, outputPath, publicDir;
@@ -17,6 +16,7 @@ export default function (optionsParam = {}) {
   const mtimeCache = new Map();
 
   const applySVGO = async (filePath, buffer) => {
+    const optimize = require('svgo').optimize;
     return Buffer.from(
       optimize(buffer, {
         path: filePath,
@@ -26,6 +26,7 @@ export default function (optionsParam = {}) {
   };
 
   const applySharp = async (filePath, buffer) => {
+    const sharp = require('sharp');
     const extName = extname(filePath).replace('.', '');
     return await sharp(buffer, { animated: extName === 'gif' })
       .toFormat(extName, options[extName.toLowerCase()])
@@ -132,15 +133,15 @@ export default function (optionsParam = {}) {
             if (fs.existsSync(fullFilePath) === false) {
               return;
             }
-            const { mtimeMs } = await fs.stat(fullFilePath);
+            const { mtimeMs } = await fsp.stat(fullFilePath);
             if (mtimeMs <= (mtimeCache.get(filePath) || 0)) {
               return;
             }
 
-            const buffer = await fs.readFile(fullFilePath);
+            const buffer = await fsp.readFile(fullFilePath);
             const { content, skipWrite } = await processFile(filePath, buffer);
             if (content?.length > 0 && !skipWrite) {
-              await fs.writeFile(fullFilePath, content);
+              await fsp.writeFile(fullFilePath, content);
               mtimeCache.set(filePath, Date.now());
             }
           });
@@ -180,7 +181,7 @@ function checkFileMatch(fileName, matcher) {
 
 function logOptimizationStats(rootConfig, sizesMap) {
   rootConfig.logger.info(
-    `\n${chalk.cyan('✨ [vite-plugin-image-optimizer]')} - optimized image resources successfully: `
+    `\n✨ ${ansi.cyan('[vite-plugin-image-optimizer]')} - optimized image resources successfully: `
   );
 
   const keyLengths = Array.from(sizesMap.keys(), name => name.length);
@@ -191,21 +192,25 @@ function logOptimizationStats(rootConfig, sizesMap) {
   sizesMap.forEach((value, name) => {
     const { size, oldSize, ratio, skipWrite } = value;
 
-    const percentChange = ratio > 0 ? chalk.red(`+${ratio}%`) : ratio <= 0 ? chalk.green(`${ratio}%`) : '';
+    const percentChange = ratio > 0 ? ansi.red(`+${ratio}%`) : ratio <= 0 ? ansi.green(`${ratio}%`) : '';
+
+    const sizeText = skipWrite
+      ? `${ansi.yellow.bold('skipped')} ${ansi.dim(
+          `original: ${oldSize.toFixed(2)}kb <= optimized: ${size.toFixed(2)}kb`
+        )}`
+      : ansi.dim(`${oldSize.toFixed(2)}kb -> ${size.toFixed(2)}kb`);
 
     rootConfig.logger.info(
-      chalk.dim(basename(rootConfig.build.outDir)) +
+      ansi.dim(basename(rootConfig.build.outDir)) +
         '/' +
-        chalk.blueBright(name) +
+        ansi.blueBright(name) +
         ' '.repeat(2 + maxKeyLength - name.length) +
-        chalk.gray(`${percentChange} ${' '.repeat(valueKeyLength - `${ratio}`.length)}`) +
+        ansi.gray(`${percentChange} ${' '.repeat(valueKeyLength - `${ratio}`.length)}`) +
         ' ' +
-        chalk.dim(
-          skipWrite
-            ? `${chalk.yellow.bold('skipped')} original: ${oldSize.toFixed(2)}kb <= optimized: ${size.toFixed(2)}kb`
-            : `${oldSize.toFixed(2)}kb -> ${size.toFixed(2)}kb`
-        )
+        sizeText
     );
   });
   rootConfig.logger.info('\n');
 }
+
+export { ViteImageOptimizer };

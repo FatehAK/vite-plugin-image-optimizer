@@ -1,4 +1,4 @@
-import fs from 'fs-extra';
+import fs from 'fs';
 import { join } from 'pathe';
 
 function deepClone(src) {

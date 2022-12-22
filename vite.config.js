@@ -12,11 +12,12 @@ export default defineConfig(({ mode }) => {
       minify: isProd ? 'esbuild' : false,
       lib: {
         entry: resolve(__dirname, 'src/index.js'),
-        name: 'index',
-        formats: ['es', 'umd'],
-        fileName: format => `index.${format}.js`,
+        name: 'ViteImageOptimizer',
+        formats: ['es', 'cjs'],
+        fileName: 'index',
       },
       rollupOptions: {
+        external: ['fs', 'fs/promises'],
         plugins: [
           isProd && strip(),
           visualizer({
@@ -25,6 +26,12 @@ export default defineConfig(({ mode }) => {
             brotliSize: true,
           }),
         ],
+        output: {
+          globals: {
+            fs: 'fs',
+            'fs/promises': 'fsp',
+          },
+        },
       },
     },
   };

@@ -3,4 +3,5 @@ dist
 .idea
 .vscode
 reports
+tar
 pnpm-lock.yaml

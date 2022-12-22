@@ -21,6 +21,7 @@ node_modules
 # compiled output
 /dist
 /build
+tar
 
 # Logs
 logs
