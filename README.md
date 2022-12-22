@@ -13,31 +13,52 @@
 
 ### Features
 
-- Optimize SVG assets using [SVGO](https://github.com/lovell/sharp) with the abilty to pass a custom config.
-- Optimize scalar assets (jpeg, png, gif, webp, avif) using [Sharp.js](https://github.com/lovell/sharp) with option to pass custom configs for each extension type.
+- Optimize SVG assets using [SVGO](https://github.com/lovell/sharp) and pass a custom configs.
+- Optimize scalar assets (jpeg, png, gif, webp, avif) using [Sharp.js](https://github.com/lovell/sharp) with the option to pass custom configs for each extension type.
 - Option to process all assets from your `/public` directory.
-- Configure `test`, `include` and `exclude` to filter assets.
+- Configure `test`, `include`, and `exclude` to filter assets.
 - Skip processing assets if their optimized size is greater than their original size.
 - Log the optimization stats showing the before and after size difference and ratio (optional)
 
+### Motivation
+
+This plugin is based on the awesome [image-minimizer-webpack-plugin](https://github.com/webpack-contrib/image-minimizer-webpack-plugin) for Webpack. I wanted to combine the
+optimization capabilities of
+**Sharp.js** and **SVGO** in a single package and I couldn't find a plugin
+for Vite that can accomplish this. I initially thought of adding [squoosh](https://github.com/GoogleChromeLabs/squoosh) and [imagemin](https://github.com/imagemin/imagemin) support as well but
+dropped the idea since they are no
+longer
+maintained.
+
+If you find the plugin useful, consider showing your support by giving a ⭐
+
+Contributions are most welcome! We follow [conventional-commits](https://www.conventionalcommits.org/en/v1.0.0/)
+
 ### Installation
 
-- NPM
+You can add it as a dev dependency to any of the package managers (NPM, Yarn, PNPM)
+
+Supports `Vite >=3` and `Node >=14`
 
 ```console
 npm install vite-plugin-image-optimizer --save-dev
 ```
 
-- Yarn
+### Usage
 
-```console
-yarn add -D vite-plugin-image-optimizer
-```
+```js
+import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
+import { defineConfig } from 'vite';
 
-- PNPM
-
-```console
-pnpm add -D vite-plugin-image-optimizer
+export default defineConfig(() => {
+  return {
+    plugins: [
+      ViteImageOptimizer({
+        /* pass your config */
+      }),
+    ],
+  };
+});
 ```
 
 ### Default Configuration
@@ -165,6 +186,7 @@ Type: `boolean`
 Default: `true`
 
 Logs the optimization stats to terminal output with file size difference in kB and percent increase/decrease.
+![terminal output image](https://images2.imgbox.com/5d/31/q9AEIG8f_o.png)
 
 ### `svg`
 
@@ -174,30 +196,30 @@ Default:
 
 ```js
 {
-    multipass: true,
-    plugins: [
-      {
-        name: 'preset-default',
-        params: {
-          overrides: {
-            cleanupNumericValues: false,
-            removeViewBox: false, // https://github.com/svg/svgo/issues/1128
-          },
-          cleanupIDs: {
-            minify: false,
-            remove: false,
-          },
-          convertPathData: false,
+  multipass: true,
+  plugins: [
+    {
+      name: 'preset-default',
+      params: {
+        overrides: {
+          cleanupNumericValues: false,
+          removeViewBox: false, // https://github.com/svg/svgo/issues/1128
         },
-      },
-      'sortAttrs',
-      {
-        name: 'addAttributesToSVGElement',
-        params: {
-          attributes: [{ xmlns: 'http://www.w3.org/2000/svg' }],
+        cleanupIDs: {
+          minify: false,
+          remove: false,
         },
+        convertPathData: false,
       },
-    ]
+    },
+    'sortAttrs',
+    {
+      name: 'addAttributesToSVGElement',
+      params: {
+        attributes: [{ xmlns: 'http://www.w3.org/2000/svg' }],
+      },
+    },
+  ]
 }
 ```
 
@@ -233,36 +255,6 @@ Default:
 
 Config object to pass to Sharp.js for assets with `jpg` or `jpeg` extension
 
-### `tiff`
-
-Type: `Object`
-
-Default:
-
-```js
-{
-  // https://sharp.pixelplumbing.com/api-output#tiff
-  quality: 100;
-}
-```
-
-Config object to pass to Sharp.js for assets with `tiff` extension
-
-### `tiff`
-
-Type: `Object`
-
-Default:
-
-```js
-{
-  // https://sharp.pixelplumbing.com/api-output#tiff
-  quality: 100;
-}
-```
-
-Config object to pass to Sharp.js for assets with `tiff` extension
-
 ### `gif`
 
 Type: `Object`
@@ -276,6 +268,21 @@ Default:
 ```
 
 Config object to pass to Sharp.js for assets with `gif` extension
+
+### `tiff`
+
+Type: `Object`
+
+Default:
+
+```js
+{
+  // https://sharp.pixelplumbing.com/api-output#tiff
+  quality: 100;
+}
+```
+
+Config object to pass to Sharp.js for assets with `tiff` extension
 
 ### `webp`
 
