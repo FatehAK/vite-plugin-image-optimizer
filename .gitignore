@@ -21,7 +21,8 @@ node_modules
 # compiled output
 /dist
 /build
-tar
+/tar
+*.tgz
 
 # Logs
 logs

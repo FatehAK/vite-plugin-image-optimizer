@@ -1,9 +1,9 @@
 {
   "name": "vite-plugin-image-optimizer",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "author": "fatehak",
   "files": [
-    "dist"
+    "dist/"
   ],
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -12,7 +12,8 @@
     ".": {
       "import": "./dist/index.mjs",
       "require": "./dist/index.js"
-    }
+    },
+    "./package.json": "./package.json"
   },
   "description": "A Vite plugin to optimize your image assets using Sharp.js and SVGO",
   "repository": {
@@ -35,6 +36,7 @@
     "start": "vite",
     "build:dev": "vite build --mode development",
     "build:prod": "vite build",
+    "release": "release-it",
     "tarball": "pnpm pack --pack-destination ./tar",
     "analyze": "open ./reports/build-stats.html",
     "clean": "pnpm rimraf reports dist node_modules/.vite node_modules/.cache",
@@ -69,6 +71,7 @@
     "husky": "^8.0.2",
     "lint-staged": "^13.1.0",
     "prettier": "^2.8.1",
+    "release-it": "^15.5.1",
     "rimraf": "^3.0.2",
     "rollup-plugin-visualizer": "^5.8.3",
     "sharp": "^0.31.3",
