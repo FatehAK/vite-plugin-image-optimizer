@@ -1,12 +1,20 @@
 <div align="center">
   <a href="https://vitejs.dev/">
     <img width="200" height="200" hspace="10"
-      src="https://vitejs.dev/logo.svg">
+      src="https://vitejs.dev/logo.svg" alt="vite logo">
   </a>
   <h1>Image Optimizer Vite</h1>
   <p>
     Plugin for <a href="https://vitejs.dev/">Vite</a> to optimize (compress) all images assets using <a href="https://github.com/lovell/sharp">Sharp.js</a> and <a href="https://github.com/svg/svgo">SVGO</a> at build time.
   </p>
+</div>
+
+<div align="center">
+  <img src="https://img.shields.io/node/v/vite-plugin-image-optimizer" alt="node-current" />
+  <img src="https://img.shields.io/npm/dependency-version/vite-plugin-image-optimizer/peer/vite" alt="npm peer dependency version" />
+  <img src="https://img.shields.io/bundlephobia/minzip/vite-plugin-image-optimizer?label=minfied" alt="npm bundle size"/>
+  <img src="https://img.shields.io/github/v/release/fatehak/vite-plugin-image-optimizer" alt="GitHub release" />
+  <img src="https://img.shields.io/npm/l/vite-plugin-image-optimizer" alt="licence" />
 </div>
 
 ## vite-plugin-image-optimizer
