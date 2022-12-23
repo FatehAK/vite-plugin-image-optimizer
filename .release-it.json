@@ -10,7 +10,7 @@
     "draft": true,
     "commitArgs": ["-S"],
     "tagArgs": ["-s"],
-    "releaseName": "✨ Version v${version}",
+    "releaseName": "✨ v${version}",
     "assets": ["tar/*.tgz"]
   },
   "npm": {

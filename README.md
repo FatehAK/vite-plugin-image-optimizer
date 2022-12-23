@@ -23,7 +23,7 @@
 
 - Optimize SVG assets using [SVGO](https://github.com/lovell/sharp) and pass custom configs.
 - Optimize scalar assets (png, jpeg, gif, tiff, webp, avif) using [Sharp.js](https://github.com/lovell/sharp) with the option to pass custom configs for each extension type.
-- Option to process all assets from your `/public` directory defined in the bundler.
+- Option to process all assets from your `public` directory defined in the bundler.
 - Configure `test`, `include`, and `exclude` to filter assets.
 - Skip processing assets if their optimized size is greater than their original size.
 - Log the optimization stats showing the before and after size difference and ratio (optional)
@@ -33,7 +33,7 @@
 This plugin is based on the awesome [image-minimizer-webpack-plugin](https://github.com/webpack-contrib/image-minimizer-webpack-plugin) for Webpack. I wanted to combine the
 optimization capabilities of
 **Sharp.js** and **SVGO** in a single package and I couldn't find a plugin
-for Vite that can accomplish this. I initially thought of adding [squoosh](https://github.com/GoogleChromeLabs/squoosh) and [imagemin](https://github.com/imagemin/imagemin) support as well but
+for Vite that could accomplish this. I initially thought of adding [squoosh](https://github.com/GoogleChromeLabs/squoosh) and [imagemin](https://github.com/imagemin/imagemin) support as well but
 dropped the idea since they are no
 longer
 maintained.
@@ -52,7 +52,7 @@ Supports `Vite >=3` and `Node >=14`
 npm install vite-plugin-image-optimizer --save-dev
 ```
 
-> **Info**
+> **Warning**
 >
 > `sharp` and `svgo` don't come installed as part of the package. You will have to install them manually and add it as a dev dependency. This is a design decision so you can choose to skip installing
 > `sharp`
@@ -257,7 +257,7 @@ Default:
 ```js
 {
   // https://sharp.pixelplumbing.com/api-output#png
-  quality: 100;
+  quality: 100,
 }
 ```
 
@@ -272,7 +272,7 @@ Default:
 ```js
 {
   // https://sharp.pixelplumbing.com/api-output#jpeg
-  quality: 100;
+  quality: 100,
 }
 ```
 
@@ -301,7 +301,7 @@ Default:
 ```js
 {
   // https://sharp.pixelplumbing.com/api-output#tiff
-  quality: 100;
+  quality: 100,
 }
 ```
 
@@ -316,7 +316,7 @@ Default:
 ```js
 {
   // https://sharp.pixelplumbing.com/api-output#webp
-  lossless: true;
+  lossless: true,
 }
 ```
 
@@ -331,7 +331,7 @@ Default:
 ```js
 {
   // https://sharp.pixelplumbing.com/api-output#avif
-  lossless: true;
+  lossless: true,
 }
 ```
 
