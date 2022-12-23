@@ -7,12 +7,11 @@
   },
   "github": {
     "release": true,
-    "autoGenerate": true,
     "draft": true,
     "commitArgs": ["-S"],
     "tagArgs": ["-s"],
     "releaseName": "✨ Version v${version}",
-    "assets": ["./tar/vite-plugin-image-optimizer-{version}.tgz"]
+    "assets": ["tar/*.tgz"]
   },
   "npm": {
     "publish": true

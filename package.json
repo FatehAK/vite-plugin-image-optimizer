@@ -37,7 +37,7 @@
     "build:dev": "vite build --mode development",
     "build:prod": "vite build",
     "release": "release-it",
-    "tarball": "pnpm pack --pack-destination ./tar",
+    "tarball": "rimraf tar && pnpm pack --pack-destination ./tar",
     "analyze": "open ./reports/build-stats.html",
     "clean": "pnpm rimraf reports dist node_modules/.vite node_modules/.cache",
     "lint": "concurrently -g -n \"prettier,eslint\" -c \"bgGreen.bold,bgBlue.bold\" \"pnpm prettier-check\" \"pnpm eslint-check\"",
