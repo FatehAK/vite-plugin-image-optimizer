@@ -1,10 +1,6 @@
 module.exports = {
   rules: {
-    'type-enum': [
-      2,
-      'always',
-      ['feat', 'fix', 'style', 'build', 'perf', 'chore', 'ci', 'refactor', 'test', 'docs', 'revert'],
-    ],
+    'type-enum': [2, 'always', ['feat', 'fix', 'style', 'build', 'perf', 'chore', 'ci', 'refactor', 'test', 'docs', 'revert']],
     'type-case': [2, 'always', 'lower-case'],
     'type-empty': [2, 'never'],
     'scope-case': [2, 'always', 'lower-case'],
@@ -32,7 +28,7 @@ module.exports = {
       { value: 'docs', name: '📝   docs' },
       { value: 'revert', name: '⏪️   revert' },
     ],
-    scopes: ['deps', 'cli', 'docs', 'ci', 'minor'],
+    scopes: ['deps', 'cli', 'docs', 'ci', 'minor', 'typo'],
     useEmoji: false,
     upperCaseSubject: true,
     customScopesAlias: 'new',

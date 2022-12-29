@@ -17,10 +17,7 @@
     "publish": true
   },
   "hooks": {
-    "before:init": [
-      "if [ \"$(git log $(git describe --tags --abbrev=0)..HEAD)\" = \"\" ]; then exit 1; fi;",
-      "pnpm lint"
-    ],
+    "before:init": ["if [ \"$(git log $(git describe --tags --abbrev=0)..HEAD)\" = \"\" ]; then exit 1; fi;", "pnpm lint"],
     "after:bump": "pnpm build:prod && pnpm tarball",
     "after:release": "echo Successfully created a release v${version} for ${repo.repository}. Please add release notes when necessary and publish it!"
   }

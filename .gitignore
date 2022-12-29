@@ -13,6 +13,10 @@ pids
 *.seed
 *.pid.lock
 
+# env files
+.env.development.local
+.env.production.local
+
 # Dependency directories
 node_modules
 .pnp.*

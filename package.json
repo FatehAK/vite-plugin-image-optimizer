@@ -41,7 +41,7 @@
     "analyze": "open ./reports/build-stats.html",
     "clean": "pnpm rimraf reports dist node_modules/.vite node_modules/.cache",
     "lint": "concurrently -g -n \"prettier,eslint\" -c \"bgGreen.bold,bgBlue.bold\" \"pnpm prettier-check\" \"pnpm eslint-check\"",
-    "lint:fix": "pnpm prettier-fix && pnpm eslint-fix",
+    "lint:fix": "pnpm eslint-fix && pnpm prettier-fix",
     "prettier-check": "prettier --loglevel warn --cache --cache-strategy content --cache-location ./node_modules/.cache/.prettiercache --check .",
     "prettier-fix": "prettier --loglevel warn --cache --cache-strategy content --cache-location ./node_modules/.cache/.prettiercache --write .",
     "eslint-check": "eslint --max-warnings=25 --format=pretty --cache --cache-strategy content --cache-location ./node_modules/.cache/.eslintcache '{**/*,*}.js'",

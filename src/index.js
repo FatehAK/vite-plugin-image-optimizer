@@ -1,8 +1,8 @@
+import fs from 'fs';
+import fsp from 'fs/promises';
 import { basename, extname, join, sep } from 'pathe';
 // eslint-disable-next-line import/no-unresolved
 import { filename } from 'pathe/utils';
-import fs from 'fs';
-import fsp from 'fs/promises';
 import ansi from 'ansi-colors';
 import { merge, readAllFiles } from './utils';
 import { VITE_PLUGIN_NAME, DEFAULT_OPTIONS } from './constants';
@@ -180,9 +180,7 @@ function checkFileMatch(fileName, matcher) {
 }
 
 function logOptimizationStats(rootConfig, sizesMap) {
-  rootConfig.logger.info(
-    `\n✨ ${ansi.cyan('[vite-plugin-image-optimizer]')} - optimized image resources successfully: `
-  );
+  rootConfig.logger.info(`\n✨ ${ansi.cyan('[vite-plugin-image-optimizer]')} - optimized image resources successfully: `);
 
   const keyLengths = Array.from(sizesMap.keys(), name => name.length);
   const valueLengths = Array.from(sizesMap.values(), value => `${Math.floor(100 * value.ratio)}`.length);
@@ -195,9 +193,7 @@ function logOptimizationStats(rootConfig, sizesMap) {
     const percentChange = ratio > 0 ? ansi.red(`+${ratio}%`) : ratio <= 0 ? ansi.green(`${ratio}%`) : '';
 
     const sizeText = skipWrite
-      ? `${ansi.yellow.bold('skipped')} ${ansi.dim(
-          `original: ${oldSize.toFixed(2)}kb <= optimized: ${size.toFixed(2)}kb`
-        )}`
+      ? `${ansi.yellow.bold('skipped')} ${ansi.dim(`original: ${oldSize.toFixed(2)}kb <= optimized: ${size.toFixed(2)}kb`)}`
       : ansi.dim(`${oldSize.toFixed(2)}kb -> ${size.toFixed(2)}kb`);
 
     rootConfig.logger.info(

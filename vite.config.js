@@ -1,7 +1,7 @@
 import { resolve } from 'path';
+import { defineConfig } from 'vite';
 import strip from '@rollup/plugin-strip';
 import { visualizer } from 'rollup-plugin-visualizer';
-import { defineConfig } from 'vite';
 
 export default defineConfig(({ mode }) => {
   const isProd = mode === 'production';
