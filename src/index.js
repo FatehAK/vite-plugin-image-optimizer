@@ -6,6 +6,8 @@ import { filename } from 'pathe/utils';
 import ansi from 'ansi-colors';
 import { merge, readAllFiles } from './utils';
 import { VITE_PLUGIN_NAME, DEFAULT_OPTIONS } from './constants';
+import { optimize } from 'svgo';
+import sharp from 'sharp';
 
 function ViteImageOptimizer(optionsParam = {}) {
   const options = merge(optionsParam, DEFAULT_OPTIONS);
@@ -17,7 +19,6 @@ function ViteImageOptimizer(optionsParam = {}) {
   const errorsMap = new Map();
 
   const applySVGO = async (filePath, buffer) => {
-    const optimize = require('svgo').optimize;
     return Buffer.from(
       optimize(buffer, {
         path: filePath,
@@ -27,7 +28,6 @@ function ViteImageOptimizer(optionsParam = {}) {
   };
 
   const applySharp = async (filePath, buffer) => {
-    const sharp = require('sharp');
     const extName = extname(filePath).replace('.', '');
     return await sharp(buffer, { animated: extName === 'gif' })
       .toFormat(extName, options[extName.toLowerCase()])
