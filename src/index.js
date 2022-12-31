@@ -97,7 +97,7 @@ function ViteImageOptimizer(optionsParam = {}) {
             bundler[filePath].source = content;
           }
         });
-        await Promise.all(handles).catch(e => rootConfig.logger.error(e));
+        await Promise.all(handles);
       }
     },
     async closeBundle() {
@@ -145,7 +145,7 @@ function ViteImageOptimizer(optionsParam = {}) {
               mtimeCache.set(filePath, Date.now());
             }
           });
-          await Promise.all(handles).catch(e => rootConfig.logger.error(e));
+          await Promise.all(handles);
         }
       }
       if (options.logStats) {
