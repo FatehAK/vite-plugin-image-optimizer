@@ -14,6 +14,7 @@ function ViteImageOptimizer(optionsParam = {}) {
 
   const sizesMap = new Map();
   const mtimeCache = new Map();
+  const errorsMap = new Map();
 
   const applySVGO = async (filePath, buffer) => {
     const optimize = require('svgo').optimize;
@@ -51,7 +52,7 @@ function ViteImageOptimizer(optionsParam = {}) {
 
       return { content: newBuffer, skipWrite };
     } catch (error) {
-      rootConfig.logger.error(`'${filePath}' - failed optimization`);
+      errorsMap.set(filePath, error.message);
       return {};
     }
   };
@@ -148,8 +149,11 @@ function ViteImageOptimizer(optionsParam = {}) {
           await Promise.all(handles);
         }
       }
-      if (options.logStats) {
+      if (sizesMap.size > 0 && options.logStats) {
         logOptimizationStats(rootConfig, sizesMap);
+      }
+      if (errorsMap.size > 0) {
+        logErrors(rootConfig, errorsMap);
       }
     },
   };
@@ -177,6 +181,22 @@ function checkFileMatch(fileName, matcher) {
     return matcher.includes(fileName);
   }
   return false;
+}
+
+function logErrors(rootConfig, errorsMap) {
+  rootConfig.logger.info(`\n🚨 ${ansi.red('[vite-plugin-image-optimizer]')} - errors during optimization for: `);
+
+  const keyLengths = Array.from(errorsMap.keys(), name => name.length);
+  const maxKeyLength = Math.max(...keyLengths);
+
+  errorsMap.forEach((message, name) => {
+    rootConfig.logger.error(
+      `${ansi.dim(basename(rootConfig.build.outDir))}/${ansi.blueBright(name)}${' '.repeat(2 + maxKeyLength - name.length)} ${ansi.red(
+        message
+      )}`
+    );
+  });
+  rootConfig.logger.info('\n');
 }
 
 function logOptimizationStats(rootConfig, sizesMap) {
