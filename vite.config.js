@@ -13,7 +13,7 @@ export default defineConfig(() => {
         fileName: 'index',
       },
       rollupOptions: {
-        external: ['fs', 'fs/promises'],
+        external: ['fs', 'fs/promises', 'svgo', 'sharp'],
         plugins: [
           visualizer({
             filename: 'reports/build-stats.html',
@@ -25,6 +25,8 @@ export default defineConfig(() => {
           globals: {
             fs: 'fs',
             'fs/promises': 'fsp',
+            'svgo': 'svgo',
+            'sharp': 'sharp',
           },
         },
       },
