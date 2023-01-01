@@ -7,6 +7,8 @@ import ansi from 'ansi-colors';
 import { merge, readAllFiles } from './utils';
 import { VITE_PLUGIN_NAME, DEFAULT_OPTIONS } from './constants';
 
+var foo = '';
+
 function ViteImageOptimizer(optionsParam = {}) {
   const options = merge(optionsParam, DEFAULT_OPTIONS);
 
