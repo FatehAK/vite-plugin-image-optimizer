@@ -32,6 +32,8 @@ body:
       description: Output of `npx envinfo --system --npmPackages '{vite,@vitejs/}*' --binaries --browsers`
       render: shell
       placeholder: System, Binaries, Browsers
+    validations:
+      required: true
   - type: dropdown
     id: package-manager
     attributes:

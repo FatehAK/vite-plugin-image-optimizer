@@ -14,7 +14,7 @@ module.exports = {
       scope: 'Scope (optional):',
       customScope: 'New Scope:',
       subject: 'Commit Message:',
-      footer: 'Any ISSUES related/closed by this change:',
+      footer: 'Any ISSUES related to this change:',
     },
     types: [
       { value: 'feat', name: '✨   feat' },
