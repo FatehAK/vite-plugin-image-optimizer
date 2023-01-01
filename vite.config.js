@@ -2,10 +2,7 @@ import { resolve } from 'path';
 import { defineConfig } from 'vite';
 import { visualizer } from 'rollup-plugin-visualizer';
 
-export default defineConfig(({ mode }) => {
-  const isProd = mode === 'production';
-  console.log(`✨ Running in ${isProd ? 'Production' : 'Development'}.\n`);
-
+export default defineConfig(() => {
   return {
     build: {
       minify: false,
