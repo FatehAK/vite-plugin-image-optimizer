@@ -17,7 +17,7 @@ export default defineConfig(({ mode }) => {
         fileName: 'index',
       },
       rollupOptions: {
-        external: ['fs', 'fs/promises'],
+        external: ['fs', 'fs/promises', 'svgo', 'sharp'],
         plugins: [
           isProd && strip(),
           visualizer({
@@ -30,6 +30,8 @@ export default defineConfig(({ mode }) => {
           globals: {
             fs: 'fs',
             'fs/promises': 'fsp',
+            'svgo': 'svgo',
+            'sharp': 'sharp',
           },
         },
       },
