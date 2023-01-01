@@ -56,7 +56,6 @@
   },
   "devDependencies": {
     "@commitlint/cli": "^17.3.0",
-    "@rollup/plugin-strip": "^3.0.2",
     "concurrently": "^7.6.0",
     "czg": "1.4.1",
     "eslint": "^8.31.0",

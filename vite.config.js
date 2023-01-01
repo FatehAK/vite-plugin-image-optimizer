@@ -1,6 +1,5 @@
 import { resolve } from 'path';
 import { defineConfig } from 'vite';
-import strip from '@rollup/plugin-strip';
 import { visualizer } from 'rollup-plugin-visualizer';
 
 export default defineConfig(({ mode }) => {
@@ -9,7 +8,7 @@ export default defineConfig(({ mode }) => {
 
   return {
     build: {
-      minify: isProd ? 'esbuild' : false,
+      minify: false,
       lib: {
         entry: resolve(__dirname, 'src/index.js'),
         name: 'ViteImageOptimizer',
@@ -19,7 +18,6 @@ export default defineConfig(({ mode }) => {
       rollupOptions: {
         external: ['fs', 'fs/promises'],
         plugins: [
-          isProd && strip(),
           visualizer({
             filename: 'reports/build-stats.html',
             gzipSize: true,
