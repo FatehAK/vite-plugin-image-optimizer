@@ -17,7 +17,7 @@ function ViteImageOptimizer(optionsParam = {}) {
   const errorsMap = new Map();
 
   const applySVGO = async (filePath, buffer) => {
-    const optimize = (await import('svgo')).optimize
+    const optimize = (await import('svgo')).optimize;
     return Buffer.from(
       optimize(buffer, {
         path: filePath,
@@ -27,7 +27,7 @@ function ViteImageOptimizer(optionsParam = {}) {
   };
 
   const applySharp = async (filePath, buffer) => {
-    const sharp = (await import('sharp')).default
+    const sharp = (await import('sharp')).default;
     const extName = extname(filePath).replace('.', '');
     return await sharp(buffer, { animated: extName === 'gif' })
       .toFormat(extName, options[extName.toLowerCase()])

@@ -25,8 +25,8 @@ export default defineConfig(() => {
           globals: {
             fs: 'fs',
             'fs/promises': 'fsp',
-            'svgo': 'svgo',
-            'sharp': 'sharp',
+            svgo: 'svgo',
+            sharp: 'sharp',
           },
         },
       },
