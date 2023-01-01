@@ -14,6 +14,7 @@ module.exports = {
       scope: 'Scope (optional):',
       customScope: 'New Scope:',
       subject: 'Commit Message:',
+      footer: 'Any ISSUES related/closed by this change:',
     },
     types: [
       { value: 'feat', name: '✨   feat' },
@@ -28,10 +29,10 @@ module.exports = {
       { value: 'docs', name: '📝   docs' },
       { value: 'revert', name: '⏪️   revert' },
     ],
-    scopes: ['deps', 'cli', 'docs', 'ci', 'minor', 'typo'],
+    scopes: ['deps', 'cli', 'docs', 'ci', 'minor', 'major', 'typo'],
     useEmoji: false,
     upperCaseSubject: true,
     customScopesAlias: 'new',
-    skipQuestions: ['body', 'breaking', 'footerPrefix', 'footer', 'confirmCommit'],
+    skipQuestions: ['body', 'breaking', 'footerPrefix', 'confirmCommit'],
   },
 };

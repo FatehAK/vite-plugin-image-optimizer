@@ -1,13 +1,13 @@
 on:
   push:
     branches:
+      - 'main'
       - 'renovate/**'
+  pull_request:
+    branches:
+      - 'main'
 
-name: build_renovate
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+name: validate_build
 
 jobs:
   lint:
