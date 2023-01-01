@@ -17,6 +17,7 @@ module.exports = {
     'no-restricted-exports': 'off',
     'no-console': 'off',
     'func-names': 'off',
+    'no-template-curly-in-string': 'off',
     'import/no-extraneous-dependencies': 'off',
     'import/prefer-default-export': 'off',
     'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
