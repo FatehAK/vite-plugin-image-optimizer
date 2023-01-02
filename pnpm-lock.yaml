@@ -6,7 +6,7 @@ specifiers:
   concurrently: ^7.6.0
   czg: 1.4.1
   eslint: ^8.31.0
-  eslint-config-prettier: ^8.5.0
+  eslint-config-prettier: ^8.6.0
   eslint-config-semistandard: ^17.0.0
   eslint-formatter-pretty: ^4.1.0
   eslint-plugin-import: ^2.26.0
@@ -33,7 +33,7 @@ devDependencies:
   concurrently: 7.6.0
   czg: 1.4.1
   eslint: 8.31.0
-  eslint-config-prettier: 8.5.0_eslint@8.31.0
+  eslint-config-prettier: 8.6.0_eslint@8.31.0
   eslint-config-semistandard: 17.0.0_qo2rstnms7c7a5kvin4dqwamnm
   eslint-formatter-pretty: 4.1.0
   eslint-plugin-import: 2.26.0_eslint@8.31.0
@@ -1713,8 +1713,8 @@ packages:
       source-map: 0.6.1
     dev: true
 
-  /eslint-config-prettier/8.5.0_eslint@8.31.0:
-    resolution: {integrity: sha512-obmWKLUNCnhtQRKc+tmnYuQl0pFU1ibYJQ5BGhTVB08bHe9wC8qUeG7c08dj9XX+AuPj1YSGSQIHl1pnDHZR0Q==}
+  /eslint-config-prettier/8.6.0_eslint@8.31.0:
+    resolution: {integrity: sha512-bAF0eLpLVqP5oEVUFKpMA+NnRFICwn9X8B5jrR9FcqnYBuPbqWEjTEspPWMj5ye6czoSLDweCzSo3Ko7gGrZaA==}
     hasBin: true
     peerDependencies:
       eslint: '>=7.0.0'
