@@ -13,7 +13,7 @@ specifiers:
   eslint-plugin-only-warn: ^1.1.0
   eslint-plugin-promise: ^6.1.1
   eslint-plugin-sonarjs: ^0.17.0
-  husky: ^8.0.2
+  husky: ^8.0.3
   lint-staged: ^13.1.0
   pathe: ^1.0.0
   prettier: ^2.8.1
@@ -22,7 +22,7 @@ specifiers:
   rollup-plugin-visualizer: ^5.9.0
   sharp: ^0.31.3
   svgo: ^3.0.2
-  vite: ^4.0.3
+  vite: ^4.0.4
 
 dependencies:
   ansi-colors: 4.1.3
@@ -40,7 +40,7 @@ devDependencies:
   eslint-plugin-only-warn: 1.1.0
   eslint-plugin-promise: 6.1.1_eslint@8.31.0
   eslint-plugin-sonarjs: 0.17.0_eslint@8.31.0
-  husky: 8.0.2
+  husky: 8.0.3
   lint-staged: 13.1.0
   prettier: 2.8.1
   release-it: 15.6.0
@@ -48,7 +48,7 @@ devDependencies:
   rollup-plugin-visualizer: 5.9.0
   sharp: 0.31.3
   svgo: 3.0.2
-  vite: 4.0.3_@types+node@14.18.36
+  vite: 4.0.4_@types+node@14.18.36
 
 packages:
 
@@ -2499,8 +2499,8 @@ packages:
     engines: {node: '>=12.20.0'}
     dev: true
 
-  /husky/8.0.2:
-    resolution: {integrity: sha512-Tkv80jtvbnkK3mYWxPZePGFpQ/tT3HNSs/sasF9P2YfkMezDl3ON37YN6jUUI4eTg5LcyVynlb6r4eyvOmspvg==}
+  /husky/8.0.3:
+    resolution: {integrity: sha512-+dQSyqPh4x1hlO1swXBiNb2HzTDN1I2IGLQx1GrBuiqFJfoMrnZWwVmatvSiO+Iz8fBUnf+lekwNo4c2LlXItg==}
     engines: {node: '>=14'}
     hasBin: true
     dev: true
@@ -4657,8 +4657,8 @@ packages:
       spdx-expression-parse: 3.0.1
     dev: true
 
-  /vite/4.0.3_@types+node@14.18.36:
-    resolution: {integrity: sha512-HvuNv1RdE7deIfQb8mPk51UKjqptO/4RXZ5yXSAvurd5xOckwS/gg8h9Tky3uSbnjYTgUm0hVCet1cyhKd73ZA==}
+  /vite/4.0.4_@types+node@14.18.36:
+    resolution: {integrity: sha512-xevPU7M8FU0i/80DMR+YhgrzR5KS2ORy1B4xcX/cXLsvnUWvfHuqMmVU6N0YiJ4JWGRJJsLCgjEzKjG9/GKoSw==}
     engines: {node: ^14.18.0 || >=16.0.0}
     hasBin: true
     peerDependencies:
