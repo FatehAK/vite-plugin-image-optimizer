@@ -35,6 +35,7 @@
   "scripts": {
     "start": "vite",
     "build": "vite build",
+    "build:watch": "vite build --watch",
     "release": "release-it",
     "tarball": "rimraf tar && pnpm pack --pack-destination ./tar",
     "analyze": "open ./reports/build-stats.html",

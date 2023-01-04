@@ -1,6 +1,7 @@
 import { resolve } from 'path';
 import { defineConfig } from 'vite';
 import { visualizer } from 'rollup-plugin-visualizer';
+import pkg from './package.json';
 
 export default defineConfig(() => {
   return {
@@ -13,7 +14,7 @@ export default defineConfig(() => {
         fileName: 'index',
       },
       rollupOptions: {
-        external: ['fs', 'fs/promises', 'svgo', 'sharp'],
+        external: ['fs', 'fs/promises', 'svgo', 'sharp', ...Object.keys(pkg.dependencies)],
         plugins: [
           visualizer({
             filename: 'reports/build-stats.html',
