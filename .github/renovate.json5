@@ -5,6 +5,7 @@
   enabledManagers: ['npm'],
   rangeStrategy: 'bump',
   commitMessagePrefix: 'chore(deps): ',
+  commitBodyTable: true,
   dependencyDashboard: true,
   dependencyDashboardAutoclose: true,
   configMigration: true,
