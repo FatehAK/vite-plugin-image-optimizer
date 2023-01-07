@@ -16,7 +16,7 @@ specifiers:
   husky: ^8.0.3
   lint-staged: ^13.1.0
   pathe: ^1.0.0
-  prettier: ^2.8.1
+  prettier: ^2.8.2
   release-it: ^15.6.0
   rimraf: ^3.0.2
   rollup-plugin-visualizer: ^5.9.0
@@ -42,7 +42,7 @@ devDependencies:
   eslint-plugin-sonarjs: 0.17.0_eslint@8.31.0
   husky: 8.0.3
   lint-staged: 13.1.0
-  prettier: 2.8.1
+  prettier: 2.8.2
   release-it: 15.6.0
   rimraf: 3.0.2
   rollup-plugin-visualizer: 5.9.0
@@ -3659,8 +3659,8 @@ packages:
     engines: {node: '>= 0.8.0'}
     dev: true
 
-  /prettier/2.8.1:
-    resolution: {integrity: sha512-lqGoSJBQNJidqCHE80vqZJHWHRFoNYsSpP9AjFhlhi9ODCJA541svILes/+/1GM3VaL/abZi7cpFzOpdR9UPKg==}
+  /prettier/2.8.2:
+    resolution: {integrity: sha512-BtRV9BcncDyI2tsuS19zzhzoxD8Dh8LiCx7j7tHzrkz8GFXAexeWFdi22mjE1d16dftH2qNaytVxqiRTGlMfpw==}
     engines: {node: '>=10.13.0'}
     hasBin: true
     dev: true
