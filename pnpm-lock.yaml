@@ -12,7 +12,7 @@ specifiers:
   eslint-plugin-import: ^2.26.0
   eslint-plugin-only-warn: ^1.1.0
   eslint-plugin-promise: ^6.1.1
-  eslint-plugin-sonarjs: ^0.17.0
+  eslint-plugin-sonarjs: ^0.18.0
   husky: ^8.0.3
   lint-staged: ^13.1.0
   pathe: ^1.0.0
@@ -39,7 +39,7 @@ devDependencies:
   eslint-plugin-import: 2.26.0_eslint@8.31.0
   eslint-plugin-only-warn: 1.1.0
   eslint-plugin-promise: 6.1.1_eslint@8.31.0
-  eslint-plugin-sonarjs: 0.17.0_eslint@8.31.0
+  eslint-plugin-sonarjs: 0.18.0_eslint@8.31.0
   husky: 8.0.3
   lint-staged: 13.1.0
   prettier: 2.8.2
@@ -1886,8 +1886,8 @@ packages:
       eslint: 8.31.0
     dev: true
 
-  /eslint-plugin-sonarjs/0.17.0_eslint@8.31.0:
-    resolution: {integrity: sha512-jtGtxI49UbJJeJj7CVRLI3+LLH+y+hkR3GOOwM7vBbci9DEFIRGCWvEd2BJScrzltZ6D6iubukTAfc9cyG7sdw==}
+  /eslint-plugin-sonarjs/0.18.0_eslint@8.31.0:
+    resolution: {integrity: sha512-DJ3osLnt6KFdT5e9ZuIDOjT5A6wUGSLeiJJT03lPgpdD+7CVWlYAw9Goe3bt7SmbFO3Xh89NOCZAuB9XA7bAUQ==}
     engines: {node: '>=14'}
     peerDependencies:
       eslint: ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0
