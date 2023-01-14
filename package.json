@@ -68,7 +68,7 @@
     "eslint-plugin-sonarjs": "^0.18.0",
     "husky": "^8.0.3",
     "lint-staged": "^13.1.0",
-    "prettier": "^2.8.2",
+    "prettier": "^2.8.3",
     "release-it": "^15.6.0",
     "rimraf": "^3.0.2",
     "rollup-plugin-visualizer": "^5.9.0",
