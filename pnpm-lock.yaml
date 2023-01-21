@@ -15,7 +15,7 @@ specifiers:
   eslint-plugin-sonarjs: ^0.18.0
   husky: ^8.0.3
   lint-staged: ^13.1.0
-  pathe: ^1.0.0
+  pathe: ^1.1.0
   prettier: ^2.8.3
   release-it: ^15.6.0
   rimraf: ^3.0.2
@@ -26,7 +26,7 @@ specifiers:
 
 dependencies:
   ansi-colors: 4.1.3
-  pathe: 1.0.0
+  pathe: 1.1.0
 
 devDependencies:
   '@commitlint/cli': 17.4.2
@@ -3655,8 +3655,8 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
-  /pathe/1.0.0:
-    resolution: {integrity: sha512-nPdMG0Pd09HuSsr7QOKUXO2Jr9eqaDiZvDwdyIhNG5SHYujkQHYKDfGQkulBxvbDHz8oHLsTgKN86LSwYzSHAg==}
+  /pathe/1.1.0:
+    resolution: {integrity: sha512-ODbEPR0KKHqECXW1GoxdDb+AZvULmXjVPy4rt+pGo2+TnjJTIPJQSVS6N63n8T2Ip+syHhbn52OewKicV0373w==}
     dev: false
 
   /picocolors/1.0.0:
