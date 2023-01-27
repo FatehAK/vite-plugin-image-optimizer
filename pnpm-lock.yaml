@@ -18,7 +18,7 @@ specifiers:
   pathe: ^1.1.0
   prettier: ^2.8.3
   release-it: ^15.6.0
-  rimraf: ^3.0.2
+  rimraf: ^4.1.2
   rollup-plugin-visualizer: ^5.9.0
   sharp: ^0.31.3
   svgo: ^3.0.2
@@ -44,7 +44,7 @@ devDependencies:
   lint-staged: 13.1.0
   prettier: 2.8.3
   release-it: 15.6.0
-  rimraf: 3.0.2
+  rimraf: 4.1.2
   rollup-plugin-visualizer: 5.9.0
   sharp: 0.31.3
   svgo: 3.0.2
@@ -4033,6 +4033,12 @@ packages:
     hasBin: true
     dependencies:
       glob: 7.2.3
+    dev: true
+
+  /rimraf/4.1.2:
+    resolution: {integrity: sha512-BlIbgFryTbw3Dz6hyoWFhKk+unCcHMSkZGrTFVAx2WmttdBSonsdtRlwiuTbDqTKr+UlXIUqJVS4QT5tUzGENQ==}
+    engines: {node: '>=14'}
+    hasBin: true
     dev: true
 
   /rollup-plugin-visualizer/5.9.0:
