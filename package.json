@@ -82,7 +82,7 @@
   "engines": {
     "node": ">=14"
   },
-  "packageManager": "pnpm@7.26.2",
+  "packageManager": "pnpm@7.26.3",
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
   }
