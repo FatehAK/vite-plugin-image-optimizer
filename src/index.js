@@ -4,7 +4,7 @@ import { basename, extname, join, sep } from 'pathe';
 // eslint-disable-next-line import/no-unresolved
 import { filename } from 'pathe/utils';
 import ansi from 'ansi-colors';
-import { merge, readAllFiles } from './utils';
+import { isRegex, merge, readAllFiles } from './utils';
 import { VITE_PLUGIN_NAME, DEFAULT_OPTIONS } from './constants';
 
 function ViteImageOptimizer(optionsParam = {}) {
@@ -169,12 +169,11 @@ function isExcludedFile(fileName, exclude) {
 
 function checkFileMatch(fileName, matcher) {
   const isString = Object.prototype.toString.call(matcher) === '[object String]';
-  const isRegex = Object.prototype.toString.call(matcher) === '[object RegExp]';
   const isArray = Array.isArray(matcher);
   if (isString) {
     return fileName === matcher;
   }
-  if (isRegex) {
+  if (isRegex(matcher)) {
     return matcher.test(fileName);
   }
   if (isArray) {

@@ -1,8 +1,12 @@
 import fs from 'fs';
 import { join } from 'pathe';
 
+export function isRegex(src) {
+  return Object.prototype.toString.call(src) === '[object RegExp]';
+}
+
 function deepClone(src) {
-  if (typeof src !== 'object' || src === null) return src;
+  if (typeof src !== 'object' || isRegex(src) || src === null) return src;
   const target = Array.isArray(src) ? [] : {};
   for (const key in src) {
     const value = src[key];
