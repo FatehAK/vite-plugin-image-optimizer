@@ -2,6 +2,8 @@
   $schema: 'https://docs.renovatebot.com/renovate-schema.json',
   extends: ['config:base'],
   labels: ['dependencies'],
+  timezone: 'Asia/Kolkata',
+  schedule: ['before 11am every saturday'],
   enabledManagers: ['npm'],
   rangeStrategy: 'bump',
   commitMessagePrefix: 'chore(deps): ',
