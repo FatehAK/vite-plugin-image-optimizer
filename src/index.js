@@ -7,6 +7,26 @@ import ansi from 'ansi-colors';
 import { isRegex, merge, readAllFiles } from './utils';
 import { VITE_PLUGIN_NAME, DEFAULT_OPTIONS } from './constants';
 
+/**
+ * @typedef {Object} Options
+ * @property {RegExp=} test - test to match files against
+ * @property {(RegExp|string|string[])=} include - files to include
+ * @property {(RegExp|string|string[])=} exclude - files to exclude
+ * @property {boolean=} includePublic - include assets in public dir or not
+ * @property {boolean=} logStats - log stats to the terminal or not
+ * @property {*=} svg - svgo opts
+ * @property {*=} png - sharp opts for png
+ * @property {*=} jpeg - sharp opts for jpeg
+ * @property {*=} jpg - sharp opts for jpg
+ * @property {*=} tiff - sharp opts for tiff
+ * @property {*=} gif - sharp opts for gif
+ * @property {*=} webp - sharp opts for webp
+ * @property {*=} avif - sharp opts for avif
+ */
+
+/**
+ * @param {Options} optionsParam
+ */
 function ViteImageOptimizer(optionsParam = {}) {
   const options = merge(optionsParam, DEFAULT_OPTIONS);
 
