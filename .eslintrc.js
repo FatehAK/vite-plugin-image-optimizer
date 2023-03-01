@@ -4,7 +4,7 @@ module.exports = {
     es2022: true,
     node: true,
   },
-  extends: ['semistandard', 'plugin:import/recommended', 'plugin:sonarjs/recommended', 'plugin:promise/recommended', 'prettier'],
+  extends: ['semistandard', 'plugin:sonarjs/recommended', 'plugin:promise/recommended', 'prettier'],
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
@@ -18,17 +18,13 @@ module.exports = {
     'no-console': 'off',
     'func-names': 'off',
     'no-template-curly-in-string': 'off',
-    'import/no-extraneous-dependencies': 'off',
-    'import/prefer-default-export': 'off',
     'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
-    'sort-imports': 'off', // turned off in favour of import/order rule
-    'import/order': [
-      'error',
-      {
-        'newlines-between': 'ignore',
-        groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
-      },
-    ],
   },
-  plugins: ['only-warn', 'import', 'sonarjs', 'promise'],
+  plugins: ['only-warn'],
+  overrides: [
+    {
+      files: ['*.ts'],
+      parser: '@typescript-eslint/parser',
+    },
+  ],
 };
