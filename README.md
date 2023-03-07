@@ -1,15 +1,11 @@
 <div align="center">
   <a href="https://vitejs.dev/">
-    <img width="200" height="200" hspace="10"
-      src="https://vitejs.dev/logo.svg" alt="vite logo">
+    <img width="200" height="200" hspace="10" src="https://vitejs.dev/logo.svg" alt="vite logo" />
   </a>
-  <h1>Image Optimizer Vite</h1>
+  <h1>Vite Image Optimizer</h1>
   <p>
-    Plugin for <a href="https://vitejs.dev/">Vite</a> to optimize (compress) all images assets using <a href="https://github.com/lovell/sharp">Sharp.js</a> and <a href="https://github.com/svg/svgo">SVGO</a> at build time.
+    Plugin for <a href="https://vitejs.dev/">Vite</a> to optimize all images assets using <a href="https://github.com/lovell/sharp">Sharp.js</a> and <a href="https://github.com/svg/svgo">SVGO</a> at build time.
   </p>
-</div>
-
-<div align="center">
   <img src="https://img.shields.io/node/v/vite-plugin-image-optimizer" alt="node-current" />
   <img src="https://img.shields.io/npm/dependency-version/vite-plugin-image-optimizer/peer/vite" alt="npm peer dependency version" />
   <img src="https://img.shields.io/bundlephobia/minzip/vite-plugin-image-optimizer?label=minfied" alt="npm bundle size"/>
@@ -17,9 +13,9 @@
   <img src="https://img.shields.io/npm/l/vite-plugin-image-optimizer" alt="licence" />
 </div>
 
-## vite-plugin-image-optimizer
+<p>&nbsp;</p>
 
-### Features
+## Features
 
 - Optimize SVG assets using [SVGO](https://github.com/lovell/sharp) and pass custom configs.
 - Optimize scalar assets (png, jpeg, gif, tiff, webp, avif) using [Sharp.js](https://github.com/lovell/sharp) with the option to pass custom configs for each extension type.
@@ -28,7 +24,7 @@
 - Skip processing assets if their optimized size is greater than their original size.
 - Log the optimization stats showing the before and after size difference and ratio (optional)
 
-### Motivation
+## Motivation
 
 This plugin is based on the awesome [image-minimizer-webpack-plugin](https://github.com/webpack-contrib/image-minimizer-webpack-plugin) for Webpack. I wanted to combine the
 optimization capabilities of
@@ -42,7 +38,7 @@ If you find the plugin useful, consider showing your support by giving a ⭐
 
 Contributions are most welcome! We follow [conventional-commits](https://www.conventionalcommits.org/en/v1.0.0/)
 
-### Installation
+## Installation
 
 You can add it as a dev dependency to any of the package managers (NPM, Yarn, PNPM)
 
@@ -66,7 +62,7 @@ npm install vite-plugin-image-optimizer --save-dev
 > npm install svgo --save-dev
 > ```
 
-### Usage
+## Usage
 
 ```js
 import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
@@ -83,7 +79,7 @@ export default defineConfig(() => {
 });
 ```
 
-### Default Configuration
+## Default Configuration
 
 The default configuration is made for lossless compression of image assets.
 
@@ -150,7 +146,7 @@ const DEFAULT_OPTIONS = {
 };
 ```
 
-### Plugin Options
+## Plugin Options
 
 - **[`test`](#test)**
 - **[`include`](#include)**
@@ -337,6 +333,6 @@ Default:
 
 Config object to pass to Sharp.js for assets with `avif` extension
 
-### License
+## License
 
 [MIT](./LICENSE)
