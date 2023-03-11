@@ -184,6 +184,9 @@ function ViteImageOptimizer(optionsParam: Options = {}): Plugin {
         }
 
         if (files.length > 0) {
+          // normalize slashes in publicDir to Linux stile
+          publicDir = publicDir.replace(/[/\\]/g, '/');
+
           const handles = files.map(async (publicFilePath: string) => {
             // convert the path to the output folder
             const filePath: string = publicFilePath.replace(publicDir + sep, '');
