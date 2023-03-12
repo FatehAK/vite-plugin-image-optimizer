@@ -123,7 +123,7 @@ function ViteImageOptimizer(optionsParam: Options = {}): Plugin {
       rootConfig = c;
       outputPath = c.build.outDir;
       if (typeof c.publicDir === 'string') {
-        publicDir = c.publicDir;
+        publicDir = c.publicDir.replace(/\\/g, '/');
       }
     },
     generateBundle: async (_, bundler) => {
@@ -184,9 +184,6 @@ function ViteImageOptimizer(optionsParam: Options = {}): Plugin {
         }
 
         if (files.length > 0) {
-          // normalize slashes in publicDir to Linux stile
-          publicDir = publicDir.replace(/[/\\]/g, '/');
-
           const handles = files.map(async (publicFilePath: string) => {
             // convert the path to the output folder
             const filePath: string = publicFilePath.replace(publicDir + sep, '');
