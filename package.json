@@ -58,10 +58,10 @@
   },
   "devDependencies": {
     "@commitlint/cli": "^17.4.4",
-    "@types/node": "^18.15.0",
+    "@types/node": "^18.15.3",
     "@typescript-eslint/parser": "^5.54.1",
     "concurrently": "^7.6.0",
-    "czg": "1.5.3",
+    "czg": "1.6.0",
     "eslint": "^8.36.0",
     "eslint-config-prettier": "^8.7.0",
     "eslint-config-semistandard": "^17.0.0",
@@ -72,13 +72,13 @@
     "husky": "^8.0.3",
     "lint-staged": "^13.2.0",
     "prettier": "^2.8.4",
-    "release-it": "^15.8.0",
+    "release-it": "^15.9.0",
     "rimraf": "^4.4.0",
     "rollup-plugin-visualizer": "^5.9.0",
     "sharp": "^0.31.3",
     "svgo": "^3.0.2",
     "typescript": "^4.9.5",
-    "vite": "^4.1.4",
+    "vite": "^4.2.0",
     "vite-plugin-dts": "^2.1.0"
   },
   "peerDependencies": {
@@ -87,7 +87,7 @@
   "engines": {
     "node": ">=14"
   },
-  "packageManager": "pnpm@7.29.1",
+  "packageManager": "pnpm@7.29.3",
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
   }
