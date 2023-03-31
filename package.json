@@ -59,7 +59,7 @@
   "devDependencies": {
     "@commitlint/cli": "^17.5.1",
     "@types/node": "^18.15.11",
-    "@typescript-eslint/parser": "^5.55.0",
+    "@typescript-eslint/parser": "^5.57.0",
     "concurrently": "^7.6.0",
     "czg": "1.6.1",
     "eslint": "^8.37.0",
