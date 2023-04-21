@@ -209,7 +209,7 @@ Logs the optimization stats to terminal output with file size difference in kB a
 
 ### `svg`
 
-Type: `Object`
+Type: [`SVGOConfig`](https://github.com/svg/svgo/blob/main/lib/svgo.d.ts#L28)
 
 Default:
 
@@ -246,7 +246,7 @@ Config object to pass to SVGO, you can override it with your custom config.
 
 ### `png`
 
-Type: `Object`
+Type: [`PngOptions`](https://github.com/lovell/sharp/blob/main/lib/index.d.ts#L1200)
 
 Default:
 
@@ -261,7 +261,7 @@ Config object to pass to Sharp.js for assets with `png` extension
 
 ### `jpeg`
 
-Type: `Object`
+Type: [`JpegOptions`](https://github.com/lovell/sharp/blob/main/lib/index.d.ts#L1060)
 
 Default:
 
@@ -276,7 +276,7 @@ Config object to pass to Sharp.js for assets with `jpg` or `jpeg` extension
 
 ### `gif`
 
-Type: `Object`
+Type: [`GifOptions`](https://github.com/lovell/sharp/blob/main/lib/index.d.ts#L1156)
 
 Default:
 
@@ -290,7 +290,7 @@ Config object to pass to Sharp.js for assets with `gif` extension
 
 ### `tiff`
 
-Type: `Object`
+Type: [`TiffOptions`](https://github.com/lovell/sharp/blob/main/lib/index.d.ts#L1175)
 
 Default:
 
@@ -305,7 +305,7 @@ Config object to pass to Sharp.js for assets with `tiff` extension
 
 ### `webp`
 
-Type: `Object`
+Type: [`WebpOptions`](https://github.com/lovell/sharp/blob/main/lib/index.d.ts#L1113)
 
 Default:
 
@@ -320,7 +320,7 @@ Config object to pass to Sharp.js for assets with `webp` extension
 
 ### `avif`
 
-Type: `Object`
+Type: [`AvifOptions`](https://github.com/lovell/sharp/blob/main/lib/index.d.ts#L1132)
 
 Default:
 
