@@ -1,5 +1,5 @@
 import type { Plugin, ResolvedConfig } from 'vite';
-import type { PngOptions, JpegOptions, TiffOptions, GifOptions, WebpOptions, AvifOptions } from 'sharp';
+import type { PngOptions, JpegOptions, TiffOptions, GifOptions, WebpOptions, AvifOptions, FormatEnum } from 'sharp';
 import type { Config as SVGOConfig } from 'svgo';
 import fs from 'fs';
 import fsp from 'fs/promises';
@@ -90,7 +90,7 @@ function ViteImageOptimizer(optionsParam: Options = {}): Plugin {
     const sharp = (await import('sharp')).default;
     const extName: string = extname(filePath).replace('.', '');
     return await sharp(buffer, { animated: extName === 'gif' })
-      .toFormat(extName, options[extName.toLowerCase()])
+      .toFormat(extName as keyof FormatEnum, options[extName.toLowerCase()])
       .toBuffer();
   };
 
