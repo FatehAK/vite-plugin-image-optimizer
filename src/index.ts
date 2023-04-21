@@ -1,4 +1,6 @@
 import type { Plugin, ResolvedConfig } from 'vite';
+import type { PngOptions, JpegOptions, TiffOptions, GifOptions, WebpOptions, AvifOptions } from 'sharp';
+import type { Config as SVGOConfig } from 'svgo';
 import fs from 'fs';
 import fsp from 'fs/promises';
 import { basename, extname, join, sep } from 'pathe';
@@ -31,35 +33,35 @@ interface Options {
   /**
    * svgo opts
    */
-  svg?: any;
+  svg?: SVGOConfig;
   /**
    * sharp opts for png
    */
-  png?: any;
+  png?: PngOptions;
   /**
    * sharp opts for jpeg
    */
-  jpeg?: any;
+  jpeg?: JpegOptions;
   /**
    * sharp opts for jpg
    */
-  jpg?: any;
+  jpg?: JpegOptions;
   /**
    * sharp opts for tiff
    */
-  tiff?: any;
+  tiff?: TiffOptions;
   /**
    * sharp opts for gif
    */
-  gif?: any;
+  gif?: GifOptions;
   /**
    * sharp opts for webp
    */
-  webp?: any;
+  webp?: WebpOptions;
   /**
    * sharp opts for avif
    */
-  avif?: any;
+  avif?: AvifOptions;
 }
 
 function ViteImageOptimizer(optionsParam: Options = {}): Plugin {
