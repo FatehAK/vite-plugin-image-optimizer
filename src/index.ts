@@ -3,10 +3,9 @@ import type { PngOptions, JpegOptions, TiffOptions, GifOptions, WebpOptions, Avi
 import type { Config as SVGOConfig } from 'svgo';
 import fs from 'fs';
 import fsp from 'fs/promises';
-import { basename, extname, join, sep } from 'pathe';
+import { extname, join, sep } from 'pathe';
 import { filename } from 'pathe/utils';
-import ansi from 'ansi-colors';
-import { isRegex, merge, readAllFiles } from './utils';
+import { merge, readAllFiles, areFilesMatching, logErrors, logOptimizationStats } from './utils';
 import { VITE_PLUGIN_NAME, DEFAULT_OPTIONS } from './constants';
 
 interface Options {
@@ -75,9 +74,9 @@ function ViteImageOptimizer(optionsParam: Options = {}): Plugin {
   const mtimeCache = new Map<string, number>();
   const errorsMap = new Map<string, string>();
 
+  /* SVGO transformation */
   const applySVGO = async (filePath: string, buffer: Buffer): Promise<Buffer> => {
     const optimize = (await import('svgo')).optimize;
-
     return Buffer.from(
       optimize(buffer.toString(), {
         path: filePath,
@@ -86,11 +85,12 @@ function ViteImageOptimizer(optionsParam: Options = {}): Plugin {
     );
   };
 
+  /* Sharp transformation */
   const applySharp = async (filePath: string, buffer: Buffer): Promise<Buffer> => {
     const sharp = (await import('sharp')).default;
-    const extName: string = extname(filePath).replace('.', '');
+    const extName: string = extname(filePath).replace('.', '').toLowerCase();
     return await sharp(buffer, { animated: extName === 'gif' })
-      .toFormat(extName as keyof FormatEnum, options[extName.toLowerCase()])
+      .toFormat(extName as keyof FormatEnum, options[extName])
       .toBuffer();
   };
 
@@ -117,6 +117,29 @@ function ViteImageOptimizer(optionsParam: Options = {}): Plugin {
     }
   };
 
+  const getFilesToProcess = (allFiles: string[], getFileName: Function) => {
+    // include takes higher priority than `test` and `exclude`
+    if (options.include) {
+      return allFiles.reduce((acc, filePath) => {
+        const fileName: string = getFileName(filePath);
+        if (areFilesMatching(fileName, options.include)) {
+          acc.push(filePath);
+        }
+        return acc;
+      }, []);
+    }
+
+    return allFiles.reduce((acc, filePath) => {
+      if (options.test?.test(filePath)) {
+        const fileName: string = getFileName(filePath);
+        if (!areFilesMatching(fileName, options.exclude)) {
+          acc.push(filePath);
+        }
+      }
+      return acc;
+    }, []);
+  };
+
   return {
     name: VITE_PLUGIN_NAME,
     enforce: 'post',
@@ -129,31 +152,14 @@ function ViteImageOptimizer(optionsParam: Options = {}): Plugin {
       }
     },
     generateBundle: async (_, bundler) => {
-      const files: string[] = [];
       const allFiles: string[] = Object.keys(bundler);
-      if (options.include) {
-        // include takes higher priority than `test` and `exclude`
-        allFiles.forEach((filePath: string) => {
-          const fileName: string = (bundler[filePath] as any).name;
-          if (isIncludedFile(fileName, options.include)) {
-            files.push(filePath);
-          }
-        });
-      } else {
-        allFiles.forEach((filePath: string) => {
-          if (options.test.test(filePath)) {
-            const fileName: string = (bundler[filePath] as any).name;
-            if (!isExcludedFile(fileName, options.exclude)) {
-              files.push(filePath);
-            }
-          }
-        });
-      }
+      const files: string[] = getFilesToProcess(allFiles, path => (bundler[path] as any).name);
 
       if (files.length > 0) {
         const handles = files.map(async (filePath: string) => {
           const source = (bundler[filePath] as any).source;
           const { content, skipWrite } = await processFile(filePath, source);
+          // write the file only if its optimized size < original size
           if (content?.length > 0 && !skipWrite) {
             (bundler[filePath] as any).source = content;
           }
@@ -163,27 +169,9 @@ function ViteImageOptimizer(optionsParam: Options = {}): Plugin {
     },
     async closeBundle() {
       if (publicDir && options.includePublic) {
-        const files: string[] = [];
         // find static images in the original static folder
         const allFiles: string[] = readAllFiles(publicDir);
-        if (options.include) {
-          // include takes higher priority than `test` and `exclude`
-          allFiles.forEach((filePath: string) => {
-            const fileName: string = filename(filePath) + extname(filePath);
-            if (isIncludedFile(fileName, options.include)) {
-              files.push(filePath);
-            }
-          });
-        } else {
-          allFiles.forEach((filePath: string) => {
-            if (options.test.test(filePath)) {
-              const fileName: string = filename(filePath) + extname(filePath);
-              if (!isExcludedFile(fileName, options.exclude)) {
-                files.push(filePath);
-              }
-            }
-          });
-        }
+        const files: string[] = getFilesToProcess(allFiles, path => filename(path) + extname(path));
 
         if (files.length > 0) {
           const handles = files.map(async (publicFilePath: string) => {
@@ -191,16 +179,14 @@ function ViteImageOptimizer(optionsParam: Options = {}): Plugin {
             const filePath: string = publicFilePath.replace(publicDir + sep, '');
             const fullFilePath: string = join(outputPath, filePath);
 
-            if (fs.existsSync(fullFilePath) === false) {
-              return;
-            }
+            if (fs.existsSync(fullFilePath) === false) return;
+
             const { mtimeMs } = await fsp.stat(fullFilePath);
-            if (mtimeMs <= (mtimeCache.get(filePath) || 0)) {
-              return;
-            }
+            if (mtimeMs <= (mtimeCache.get(filePath) || 0)) return;
 
             const buffer: Buffer = await fsp.readFile(fullFilePath);
             const { content, skipWrite } = await processFile(filePath, buffer);
+            // write the file only if its optimized size < original size
             if (content?.length > 0 && !skipWrite) {
               await fsp.writeFile(fullFilePath, content);
               mtimeCache.set(filePath, Date.now());
@@ -217,78 +203,6 @@ function ViteImageOptimizer(optionsParam: Options = {}): Plugin {
       }
     },
   };
-}
-
-function isIncludedFile(fileName: string, include): boolean {
-  return checkFileMatch(fileName, include);
-}
-
-function isExcludedFile(fileName: string, exclude): boolean {
-  return checkFileMatch(fileName, exclude);
-}
-
-function checkFileMatch(fileName: string, matcher): boolean {
-  const isString = Object.prototype.toString.call(matcher) === '[object String]';
-  const isArray = Array.isArray(matcher);
-  if (isString) {
-    return fileName === matcher;
-  }
-  if (isRegex(matcher)) {
-    return matcher.test(fileName);
-  }
-  if (isArray) {
-    return matcher.includes(fileName);
-  }
-  return false;
-}
-
-function logErrors(rootConfig: ResolvedConfig, errorsMap: Map<string, string>) {
-  rootConfig.logger.info(`\n🚨 ${ansi.red('[vite-plugin-image-optimizer]')} - errors during optimization for: `);
-
-  const keyLengths: number[] = Array.from(errorsMap.keys(), (name: string) => name.length);
-  const maxKeyLength: number = Math.max(...keyLengths);
-
-  errorsMap.forEach((message: string, name: string) => {
-    rootConfig.logger.error(
-      `${ansi.dim(basename(rootConfig.build.outDir))}/${ansi.blueBright(name)}${' '.repeat(2 + maxKeyLength - name.length)} ${ansi.red(
-        message
-      )}`
-    );
-  });
-  rootConfig.logger.info('\n');
-}
-
-function logOptimizationStats(
-  rootConfig: ResolvedConfig,
-  sizesMap: Map<string, { size: number; oldSize: number; ratio: number; skipWrite: boolean }>
-) {
-  rootConfig.logger.info(`\n✨ ${ansi.cyan('[vite-plugin-image-optimizer]')} - optimized image resources successfully: `);
-
-  const keyLengths: number[] = Array.from(sizesMap.keys(), (name: string) => name.length);
-  const valueLengths: number[] = Array.from(sizesMap.values(), (value: any) => `${Math.floor(100 * value.ratio)}`.length);
-
-  const maxKeyLength: number = Math.max(...keyLengths);
-  const valueKeyLength: number = Math.max(...valueLengths);
-  sizesMap.forEach((value, name) => {
-    const { size, oldSize, ratio, skipWrite } = value;
-
-    const percentChange: string = ratio > 0 ? ansi.red(`+${ratio}%`) : ratio <= 0 ? ansi.green(`${ratio}%`) : '';
-
-    const sizeText: string = skipWrite
-      ? `${ansi.yellow.bold('skipped')} ${ansi.dim(`original: ${oldSize.toFixed(2)}kb <= optimized: ${size.toFixed(2)}kb`)}`
-      : ansi.dim(`${oldSize.toFixed(2)}kb -> ${size.toFixed(2)}kb`);
-
-    rootConfig.logger.info(
-      ansi.dim(basename(rootConfig.build.outDir)) +
-        '/' +
-        ansi.blueBright(name) +
-        ' '.repeat(2 + maxKeyLength - name.length) +
-        ansi.gray(`${percentChange} ${' '.repeat(valueKeyLength - `${ratio}`.length)}`) +
-        ' ' +
-        sizeText
-    );
-  });
-  rootConfig.logger.info('\n');
 }
 
 export { ViteImageOptimizer };
