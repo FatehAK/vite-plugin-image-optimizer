@@ -22,8 +22,8 @@
 - Option to process all assets from your `public` directory defined in the bundler.
 - Configure `test`, `include`, and `exclude` to filter assets.
 - Skip processing assets if their optimized size is greater than their original size.
-- Log the optimization stats showing the before and after size difference and ratio (optional)
-  ![terminal output image](https://images2.imgbox.com/5d/31/q9AEIG8f_o.png)
+- Log the optimization stats showing the before and after size difference, ratio and total savings (optional)
+  ![terminal output image](https://images2.imgbox.com/cf/a7/WkuqGLBA_o.png)
 
 ## Motivation
 
@@ -204,7 +204,7 @@ Type: `boolean`
 
 Default: `true`
 
-Logs the optimization stats to terminal output with file size difference in kB and percent increase/decrease.
+Logs the optimization stats to terminal output with file size difference in kB, percent increase/decrease and total savings.
 
 ### `svg`
 

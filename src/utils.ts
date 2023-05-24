@@ -67,7 +67,7 @@ export function areFilesMatching(fileName: string, matcher): boolean {
 
 /* loggers */
 export function logErrors(rootConfig: ResolvedConfig, errorsMap: Map<string, string>) {
-  rootConfig.logger.info(`\n🚨 ${ansi.red('[vite-plugin-image-optimizer]')} - errors during optimization for: `);
+  rootConfig.logger.info(`\n🚨 ${ansi.red('[vite-plugin-image-optimizer]')} - errors during optimization: `);
 
   const keyLengths: number[] = Array.from(errorsMap.keys(), (name: string) => name.length);
   const maxKeyLength: number = Math.max(...keyLengths);
@@ -86,21 +86,24 @@ export function logOptimizationStats(
   rootConfig: ResolvedConfig,
   sizesMap: Map<string, { size: number; oldSize: number; ratio: number; skipWrite: boolean }>
 ) {
-  rootConfig.logger.info(`\n✨ ${ansi.cyan('[vite-plugin-image-optimizer]')} - optimized image resources successfully: `);
+  rootConfig.logger.info(`\n✨ ${ansi.cyan('[vite-plugin-image-optimizer]')} - optimized images successfully: \n`);
 
   const keyLengths: number[] = Array.from(sizesMap.keys(), (name: string) => name.length);
   const valueLengths: number[] = Array.from(sizesMap.values(), (value: any) => `${Math.floor(100 * value.ratio)}`.length);
 
   const maxKeyLength: number = Math.max(...keyLengths);
   const valueKeyLength: number = Math.max(...valueLengths);
+
+  let totalOriginalSize: number = 0;
+  let totalKbSaved: number = 0;
   sizesMap.forEach((value, name) => {
     const { size, oldSize, ratio, skipWrite } = value;
 
     const percentChange: string = ratio > 0 ? ansi.red(`+${ratio}%`) : ratio <= 0 ? ansi.green(`${ratio}%`) : '';
 
     const sizeText: string = skipWrite
-      ? `${ansi.yellow.bold('skipped')} ${ansi.dim(`original: ${oldSize.toFixed(2)}kb <= optimized: ${size.toFixed(2)}kb`)}`
-      : ansi.dim(`${oldSize.toFixed(2)}kb -> ${size.toFixed(2)}kb`);
+      ? `${ansi.yellow.bold('skipped')} ${ansi.dim(`original: ${oldSize.toFixed(2)} KB <= optimized: ${size.toFixed(2)} KB`)}`
+      : ansi.dim(`${oldSize.toFixed(2)} KB ⭢  ${size.toFixed(2)} KB`);
 
     rootConfig.logger.info(
       ansi.dim(basename(rootConfig.build.outDir)) +
@@ -111,6 +114,19 @@ export function logOptimizationStats(
         ' ' +
         sizeText
     );
+
+    if (!skipWrite) {
+      totalOriginalSize += oldSize;
+      totalKbSaved += oldSize - size;
+    }
   });
+
+  if (totalKbSaved > 0) {
+    const kbText = `${totalKbSaved.toFixed(2)}KB`;
+    const mbText = `${(totalKbSaved / 1024).toFixed(2)}MB`;
+    const savingsPercent = `${Math.trunc((totalKbSaved / totalOriginalSize) * 100)}%`;
+    rootConfig.logger.info(`\n💰 total savings = ${ansi.green(kbText)}/${ansi.green(mbText)} ≈ ${ansi.green(savingsPercent)}`);
+  }
+
   rootConfig.logger.info('\n');
 }
