@@ -106,15 +106,15 @@ export function logOptimizationStats(rootConfig: ResolvedConfig, sizesMap: Map<s
   const valueKeyLength: number = Math.max(...valueLengths);
 
   let totalOriginalSize: number = 0;
-  let totalKbSaved: number = 0;
+  let totalSavedSize: number = 0;
   sizesMap.forEach((value, name) => {
     const { size, oldSize, ratio, skipWrite } = value;
 
     const percentChange: string = ratio > 0 ? ansi.red(`+${ratio}%`) : ratio <= 0 ? ansi.green(`${ratio}%`) : '';
 
     const sizeText: string = skipWrite
-      ? `${ansi.yellow.bold('skipped')} ${ansi.dim(`original: ${oldSize.toFixed(2)} KB <= optimized: ${size.toFixed(2)} KB`)}`
-      : ansi.dim(`${oldSize.toFixed(2)} KB ⭢  ${size.toFixed(2)} KB`);
+      ? `${ansi.yellow.bold('skipped')} ${ansi.dim(`original: ${oldSize.toFixed(2)} kB <= optimized: ${size.toFixed(2)} kB`)}`
+      : ansi.dim(`${oldSize.toFixed(2)} kB ⭢  ${size.toFixed(2)} kB`);
 
     rootConfig.logger.info(
       decideStyle(
@@ -131,16 +131,16 @@ export function logOptimizationStats(rootConfig: ResolvedConfig, sizesMap: Map<s
 
     if (!skipWrite) {
       totalOriginalSize += oldSize;
-      totalKbSaved += oldSize - size;
+      totalSavedSize += oldSize - size;
     }
   });
 
-  if (totalKbSaved > 0) {
-    const kbText = `${totalKbSaved.toFixed(2)}KB`;
-    const mbText = `${(totalKbSaved / 1024).toFixed(2)}MB`;
-    const savingsPercent = `${Math.trunc((totalKbSaved / totalOriginalSize) * 100)}%`;
+  if (totalSavedSize > 0) {
+    const savedText = `${totalSavedSize.toFixed(2)}kB`;
+    const originalText = `${totalOriginalSize.toFixed(2)}kB`;
+    const savingsPercent = `${Math.round((totalSavedSize / totalOriginalSize) * 100)}%`;
     rootConfig.logger.info(
-      decideStyle(`\n💰 total savings = ${ansi.green(kbText)}/${ansi.green(mbText)} ≈ ${ansi.green(savingsPercent)}`, ansiColors)
+      decideStyle(`\n💰 total savings = ${ansi.green(savedText)}/${ansi.green(originalText)} ≈ ${ansi.green(savingsPercent)}`, ansiColors)
     );
   }
 
