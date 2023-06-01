@@ -91,6 +91,7 @@ const DEFAULT_OPTIONS = {
   include: undefined,
   includePublic: true,
   logStats: true,
+  ansiColors: true,
   svg: {
     multipass: true,
     plugins: [
@@ -154,6 +155,7 @@ const DEFAULT_OPTIONS = {
 - **[`exclude`](#exclude)**
 - **[`includePublic`](#includepublic)**
 - **[`logStats`](#logstats)**
+- **[`ansiColors`](#ansiColors)**
 - **[`svg`](#svg)**
 - **[`png`](#png)**
 - **[`jpeg`](#jpeg)**
@@ -205,6 +207,14 @@ Type: `boolean`
 Default: `true`
 
 Logs the optimization stats to terminal output with file size difference in kB, percent increase/decrease and total savings.
+
+### `ansiColors`
+
+Type: `boolean`
+
+Default: `true`
+
+Logs the optimization stats or errors with ansi colors in the terminal.
 
 ### `svg`
 

@@ -26,6 +26,10 @@ interface Options {
    */
   includePublic?: boolean;
   /**
+   * display logs using colors or not
+   */
+  ansiColors?: boolean;
+  /**
    * log stats to the terminal or not
    */
   logStats?: boolean;
@@ -196,10 +200,10 @@ function ViteImageOptimizer(optionsParam: Options = {}): Plugin {
         }
       }
       if (sizesMap.size > 0 && options.logStats) {
-        logOptimizationStats(rootConfig, sizesMap);
+        logOptimizationStats(rootConfig, sizesMap, options.ansiColors);
       }
       if (errorsMap.size > 0) {
-        logErrors(rootConfig, errorsMap);
+        logErrors(rootConfig, errorsMap, options.ansiColors);
       }
     },
   };
