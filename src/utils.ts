@@ -97,7 +97,7 @@ export function logErrors(rootConfig: ResolvedConfig, errorsMap: Map<string, str
 }
 
 export function logOptimizationStats(rootConfig: ResolvedConfig, sizesMap: Map<string, Sizes>, ansiColors: boolean) {
-  rootConfig.logger.info(decideStyle(`\n✨ ${ansi.cyan('[vite-plugin-image-optimizer]')} - optimized image successfully: `, ansiColors));
+  rootConfig.logger.info(decideStyle(`\n✨ ${ansi.cyan('[vite-plugin-image-optimizer]')} - optimized images successfully: `, ansiColors));
 
   const keyLengths: number[] = Array.from(sizesMap.keys(), (name: string) => name.length);
   const valueLengths: number[] = Array.from(sizesMap.values(), (value: any) => `${Math.floor(100 * value.ratio)}`.length);

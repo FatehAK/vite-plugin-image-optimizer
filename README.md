@@ -23,7 +23,7 @@
 - Configure `test`, `include`, and `exclude` to filter assets.
 - Skip processing assets if their optimized size is greater than their original size.
 - Log the optimization stats showing the before and after size difference, ratio and total savings (optional)
-  ![terminal output image](https://images2.imgbox.com/cf/a7/WkuqGLBA_o.png)
+  ![terminal output image](https://images2.imgbox.com/6c/e7/DRpgWUM6_o.png)
 
 ## Motivation
 
@@ -214,7 +214,7 @@ Type: `boolean`
 
 Default: `true`
 
-Logs the optimization stats or errors with ansi colors in the terminal.
+Logs the optimization stats or errors with ansi colors in the terminal. Set it to `false` for shells that don't support color text.
 
 ### `svg`
 
