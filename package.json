@@ -57,7 +57,7 @@
     "pathe": "^1.1.1"
   },
   "devDependencies": {
-    "@commitlint/cli": "^17.6.6",
+    "@commitlint/cli": "^17.6.7",
     "@types/node": "^20.4.2",
     "@typescript-eslint/parser": "^5.62.0",
     "concurrently": "^8.2.0",
