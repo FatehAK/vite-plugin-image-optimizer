@@ -3,7 +3,7 @@ import type { PngOptions, JpegOptions, TiffOptions, GifOptions, WebpOptions, Avi
 import type { Config as SVGOConfig } from 'svgo';
 import fs from 'fs';
 import fsp from 'fs/promises';
-import { extname, join, sep } from 'pathe';
+import { dirname, extname, join, sep } from 'pathe';
 import { filename } from 'pathe/utils';
 import { merge, readAllFiles, areFilesMatching, logErrors, logOptimizationStats } from './utils';
 import { VITE_PLUGIN_NAME, DEFAULT_OPTIONS } from './constants';
@@ -65,6 +65,14 @@ interface Options {
    * sharp opts for avif
    */
   avif?: AvifOptions;
+  /**
+   * cache optimized images or not
+   */
+  cache?: boolean;
+  /**
+   * path to the cache directory
+   */
+  cacheLocation?: string;
 }
 
 function ViteImageOptimizer(optionsParam: Options = {}): Plugin {
@@ -74,7 +82,7 @@ function ViteImageOptimizer(optionsParam: Options = {}): Plugin {
   let publicDir: string;
   let rootConfig: ResolvedConfig;
 
-  const sizesMap = new Map<string, { size: number; oldSize: number; ratio: number; skipWrite: boolean }>();
+  const sizesMap = new Map<string, { size: number; oldSize: number; ratio: number; skipWrite: boolean; isCached: boolean }>();
   const mtimeCache = new Map<string, number>();
   const errorsMap = new Map<string, string>();
 
@@ -100,9 +108,30 @@ function ViteImageOptimizer(optionsParam: Options = {}): Plugin {
 
   const processFile = async (filePath: string, buffer: Buffer) => {
     try {
-      const engine: Function = /\.svg$/.test(filePath) ? applySVGO : applySharp;
-      const newBuffer: Buffer = await engine(filePath, buffer);
+      let newBuffer: Buffer;
 
+      let isCached: boolean;
+      const cachedFilePath = join(options.cacheLocation, filePath);
+      if (options.cache === true && fs.existsSync(cachedFilePath)) {
+        // load buffer from cache (when enabled and available)
+        newBuffer = await fsp.readFile(cachedFilePath);
+        isCached = true;
+      } else {
+        // create buffer from engine
+        const engine = /\.svg$/.test(filePath) ? applySVGO : applySharp;
+        newBuffer = await engine(filePath, buffer);
+        isCached = false;
+      }
+
+      // store buffer in cache
+      if (options.cache === true && !isCached) {
+        if (!fs.existsSync(dirname(cachedFilePath))) {
+          await fsp.mkdir(dirname(cachedFilePath), { recursive: true });
+        }
+        await fsp.writeFile(cachedFilePath, newBuffer);
+      }
+
+      // calculate sizes
       const newSize: number = newBuffer.byteLength;
       const oldSize: number = buffer.byteLength;
       const skipWrite: boolean = newSize >= oldSize;
@@ -112,6 +141,7 @@ function ViteImageOptimizer(optionsParam: Options = {}): Plugin {
         oldSize: oldSize / 1024,
         ratio: Math.floor(100 * (newSize / oldSize - 1)),
         skipWrite,
+        isCached,
       });
 
       return { content: newBuffer, skipWrite };
@@ -160,6 +190,10 @@ function ViteImageOptimizer(optionsParam: Options = {}): Plugin {
       const files: string[] = getFilesToProcess(allFiles, path => (bundler[path] as any).name);
 
       if (files.length > 0) {
+        if (options.cache === true && !fs.existsSync(options.cacheLocation)) {
+          await fsp.mkdir(options.cacheLocation);
+        }
+
         const handles = files.map(async (filePath: string) => {
           const source = (bundler[filePath] as any).source;
           const { content, skipWrite } = await processFile(filePath, source);
