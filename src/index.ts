@@ -22,6 +22,10 @@ interface Options {
    */
   exclude?: RegExp | string | string[];
   /**
+   * convert all images to formats
+   */
+  convertAllTo?: string[];
+  /**
    * include assets in public dir or not
    */
   includePublic?: boolean;
@@ -90,22 +94,21 @@ function ViteImageOptimizer(optionsParam: Options = {}): Plugin {
   };
 
   /* Sharp transformation */
-  const applySharp = async (filePath: string, buffer: Buffer): Promise<Buffer> => {
+  const applySharp = async (filePath: string, buffer: Buffer, toFileExt: string = null): Promise<Buffer> => {
     const sharp = (await import('sharp')).default;
-    const extName: string = extname(filePath).replace('.', '').toLowerCase();
+    const extName: string = toFileExt || extname(filePath).replace('.', '').toLowerCase();
     return await sharp(buffer, { animated: extName === 'gif' })
       .toFormat(extName as keyof FormatEnum, options[extName])
       .toBuffer();
   };
 
-  const processFile = async (filePath: string, buffer: Buffer) => {
+  const processFile = async (filePath: string, buffer: Buffer, toFileExt: string = null) => {
     try {
       const engine: Function = /\.svg$/.test(filePath) ? applySVGO : applySharp;
-      const newBuffer: Buffer = await engine(filePath, buffer);
-
+      const newBuffer: Buffer = await engine(filePath, buffer, toFileExt)
       const newSize: number = newBuffer.byteLength;
       const oldSize: number = buffer.byteLength;
-      const skipWrite: boolean = newSize >= oldSize;
+      const skipWrite: boolean = newSize >= oldSize && !toFileExt;
       // save the sizes of the old and new image
       sizesMap.set(filePath, {
         size: newSize / 1024,
@@ -164,9 +167,16 @@ function ViteImageOptimizer(optionsParam: Options = {}): Plugin {
           const source = (bundler[filePath] as any).source;
           const { content, skipWrite } = await processFile(filePath, source);
           // write the file only if its optimized size < original size
-          if (content?.length > 0 && !skipWrite) {
+          if (content?.length && !skipWrite) {
             (bundler[filePath] as any).source = content;
           }
+
+          options.convertAllTo.forEach(async (format: string) => {
+            const { content } = await processFile(filePath, source, format);
+            if (content?.length) {
+              (bundler[filePath + '.' + format] as any).source = content;
+            }
+          });
         });
         await Promise.all(handles);
       }
@@ -195,6 +205,14 @@ function ViteImageOptimizer(optionsParam: Options = {}): Plugin {
               await fsp.writeFile(fullFilePath, content);
               mtimeCache.set(filePath, Date.now());
             }
+
+            options.convertAllTo.forEach(async (format: string) => {
+              const { content } = await processFile(filePath, buffer, format);
+              if (content?.length) {
+                await fsp.writeFile(fullFilePath + '.' + format, content);
+                mtimeCache.set(filePath + '.' + format, Date.now());
+              }
+            });
           });
           await Promise.all(handles);
         }

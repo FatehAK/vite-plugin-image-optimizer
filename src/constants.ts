@@ -2,6 +2,7 @@ export const VITE_PLUGIN_NAME = 'vite-plugin-image-optimizer';
 export const DEFAULT_OPTIONS = {
   logStats: true,
   ansiColors: true,
+  convertAllTo: [],
   includePublic: true,
   exclude: undefined,
   include: undefined,
