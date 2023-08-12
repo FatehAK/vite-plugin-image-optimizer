@@ -174,6 +174,12 @@ function ViteImageOptimizer(optionsParam: Options = {}): Plugin {
     }, []);
   };
 
+  const ensureCacheDirectoryExists = async function () {
+    if (options.cache === true && !fs.existsSync(options.cacheLocation)) {
+      await fsp.mkdir(options.cacheLocation);
+    }
+  };
+
   return {
     name: VITE_PLUGIN_NAME,
     enforce: 'post',
@@ -190,9 +196,7 @@ function ViteImageOptimizer(optionsParam: Options = {}): Plugin {
       const files: string[] = getFilesToProcess(allFiles, path => (bundler[path] as any).name);
 
       if (files.length > 0) {
-        if (options.cache === true && !fs.existsSync(options.cacheLocation)) {
-          await fsp.mkdir(options.cacheLocation);
-        }
+        await ensureCacheDirectoryExists();
 
         const handles = files.map(async (filePath: string) => {
           const source = (bundler[filePath] as any).source;
@@ -212,6 +216,8 @@ function ViteImageOptimizer(optionsParam: Options = {}): Plugin {
         const files: string[] = getFilesToProcess(allFiles, path => filename(path) + extname(path));
 
         if (files.length > 0) {
+          await ensureCacheDirectoryExists();
+
           const handles = files.map(async (publicFilePath: string) => {
             // convert the path to the output folder
             const filePath: string = publicFilePath.replace(publicDir + sep, '');
