@@ -176,7 +176,7 @@ function ViteImageOptimizer(optionsParam: Options = {}): Plugin {
 
   const ensureCacheDirectoryExists = async function () {
     if (options.cache === true && !fs.existsSync(options.cacheLocation)) {
-      await fsp.mkdir(options.cacheLocation);
+      await fsp.mkdir(options.cacheLocation, { recursive: true });
     }
   };
 
