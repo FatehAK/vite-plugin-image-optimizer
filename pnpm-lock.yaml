@@ -66,7 +66,7 @@ devDependencies:
     version: 5.0.5
   rollup-plugin-visualizer:
     specifier: ^5.9.3
-    version: 5.9.3
+    version: 5.10.0
   sharp:
     specifier: ^0.33.0
     version: 0.33.0
@@ -4739,8 +4739,8 @@ packages:
       glob: 10.3.10
     dev: true
 
-  /rollup-plugin-visualizer@5.9.3:
-    resolution: {integrity: sha512-ieGM5UAbMVqThX67GCuFHu/GkaSXIUZwFKJsSzE+7+k9fibU/6gbUz7SL+9BBzNtv5bIFHj7kEu0TWcqEnT/sQ==}
+  /rollup-plugin-visualizer@5.10.0:
+    resolution: {integrity: sha512-N4AkNL0qFvipegbDJ0kupS+8eKGjL0q+lYwV46NflLX/B8Rh73wz3kCIdg50bR6XVhNcaMA4Eb519xtm90Ckfg==}
     engines: {node: '>=14'}
     hasBin: true
     peerDependencies:
