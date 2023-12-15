@@ -65,19 +65,19 @@ devDependencies:
     specifier: ^5.0.5
     version: 5.0.5
   rollup-plugin-visualizer:
-    specifier: ^5.10.0
+    specifier: ^5.11.0
     version: 5.11.0
   sharp:
     specifier: ^0.33.0
     version: 0.33.0
   svgo:
-    specifier: ^3.0.5
-    version: 3.0.5
+    specifier: ^3.1.0
+    version: 3.1.0
   typescript:
     specifier: ^5.3.3
     version: 5.3.3
   vite:
-    specifier: ^4.5.0
+    specifier: ^4.5.1
     version: 4.5.1(@types/node@20.10.4)
   vite-plugin-dts:
     specifier: ^2.3.0
@@ -5185,8 +5185,8 @@ packages:
     engines: {node: '>= 0.4'}
     dev: true
 
-  /svgo@3.0.5:
-    resolution: {integrity: sha512-HQKHEo73pMNOlDlBcLgZRcHW2+1wo7bFYayAXkGN0l/2+h68KjlfZyMRhdhaGvoHV2eApOovl12zoFz42sT6rQ==}
+  /svgo@3.1.0:
+    resolution: {integrity: sha512-R5SnNA89w1dYgNv570591F66v34b3eQShpIBcQtZtM5trJwm1VvxbIoMpRYY3ybTAutcKTLEmTsdnaknOHbiQA==}
     engines: {node: '>=14.0.0'}
     hasBin: true
     dependencies:
