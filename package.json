@@ -58,7 +58,7 @@
   },
   "devDependencies": {
     "@commitlint/cli": "^17.8.1",
-    "@types/node": "^20.11.7",
+    "@types/node": "^20.11.16",
     "@typescript-eslint/parser": "^5.62.0",
     "concurrently": "^8.2.2",
     "czg": "1.8.0",
@@ -87,7 +87,7 @@
   "engines": {
     "node": ">=14"
   },
-  "packageManager": "pnpm@8.14.3",
+  "packageManager": "pnpm@8.15.1",
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
   }
