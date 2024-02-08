@@ -1,5 +1,5 @@
 import type { Plugin, ResolvedConfig } from 'vite';
-import type { PngOptions, JpegOptions, TiffOptions, GifOptions, WebpOptions, AvifOptions, FormatEnum } from 'sharp';
+import type { PngOptions, JpegOptions, TiffOptions, GifOptions, WebpOptions, AvifOptions, ResizeOptions, FormatEnum } from 'sharp';
 import type { Config as SVGOConfig } from 'svgo';
 import fs from 'fs';
 import fsp from 'fs/promises';
@@ -65,6 +65,10 @@ interface Options {
    * sharp opts for avif
    */
   avif?: AvifOptions;
+  /**
+   * sharp opts for resizing
+   */
+  resize?: ResizeOptions;
   /**
    * cache optimized images or not
    */
