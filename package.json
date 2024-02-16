@@ -58,7 +58,7 @@
   },
   "devDependencies": {
     "@commitlint/cli": "^17.8.1",
-    "@types/node": "^20.11.17",
+    "@types/node": "^20.11.19",
     "@typescript-eslint/parser": "^5.62.0",
     "concurrently": "^8.2.2",
     "czg": "1.8.0",
@@ -68,7 +68,7 @@
     "eslint-formatter-pretty": "^5.0.0",
     "eslint-plugin-only-warn": "^1.1.0",
     "eslint-plugin-promise": "^6.1.1",
-    "eslint-plugin-sonarjs": "^0.23.0",
+    "eslint-plugin-sonarjs": "^0.24.0",
     "husky": "^8.0.3",
     "lint-staged": "^13.3.0",
     "prettier": "^2.8.8",
@@ -87,7 +87,7 @@
   "engines": {
     "node": ">=14"
   },
-  "packageManager": "pnpm@8.15.1",
+  "packageManager": "pnpm@8.15.3",
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
   }
