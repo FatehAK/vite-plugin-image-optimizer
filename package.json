@@ -58,11 +58,11 @@
   },
   "devDependencies": {
     "@commitlint/cli": "^17.8.1",
-    "@types/node": "^20.11.19",
+    "@types/node": "^20.11.20",
     "@typescript-eslint/parser": "^5.62.0",
     "concurrently": "^8.2.2",
     "czg": "1.8.0",
-    "eslint": "^8.56.0",
+    "eslint": "^8.57.0",
     "eslint-config-prettier": "^8.10.0",
     "eslint-config-semistandard": "^17.0.0",
     "eslint-formatter-pretty": "^5.0.0",
