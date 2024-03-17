@@ -1939,7 +1939,7 @@ packages:
     engines: {node: ^10 || ^12.20.0 || ^14.13.0 || >=15.0.0, npm: '>=7.0.0'}
     dependencies:
       mdn-data: 2.0.28
-      source-map-js: 1.0.3
+      source-map-js: 1.1.0
     dev: true
 
   /css-tree@2.3.1:
@@ -1947,7 +1947,7 @@ packages:
     engines: {node: ^10 || ^12.20.0 || ^14.13.0 || >=15.0.0}
     dependencies:
       mdn-data: 2.0.30
-      source-map-js: 1.0.3
+      source-map-js: 1.1.0
     dev: true
 
   /css-what@6.1.0:
@@ -4602,13 +4602,13 @@ packages:
     engines: {node: '>= 0.4'}
     dev: true
 
-  /postcss@8.4.35:
-    resolution: {integrity: sha512-u5U8qYpBCpN13BsiEB0CbR1Hhh4Gc0zLFuedrHJKMctHCHAGrMdG0PRM/KErzAL3CU6/eckEtmHNB3x6e3c0vA==}
+  /postcss@8.4.36:
+    resolution: {integrity: sha512-/n7eumA6ZjFHAsbX30yhHup/IMkOmlmvtEi7P+6RMYf+bGJSUHc3geH4a0NSZxAz/RJfiS9tooCTs9LAVYUZKw==}
     engines: {node: ^10 || ^12 || >=14}
     dependencies:
       nanoid: 3.3.7
       picocolors: 1.0.0
-      source-map-js: 1.0.3
+      source-map-js: 1.1.0
     dev: true
 
   /prelude-ls@1.1.2:
@@ -5176,8 +5176,8 @@ packages:
       smart-buffer: 4.2.0
     dev: true
 
-  /source-map-js@1.0.3:
-    resolution: {integrity: sha512-H/5Vyeo/I1hqIdOS0m1Q63OPr0yFdZLaiVkr8ap/WyIVGdU3PyoOV/HXY8+PJE2M43+n11FY5zWQnNRNnD1UFg==}
+  /source-map-js@1.1.0:
+    resolution: {integrity: sha512-9vC2SfsJzlej6MAaMPLu8HiBSHGdRAJ9hVFYN1ibZoNkeanmDmLUcIrj6G9DGL7XMJ54AKg/G75akXl1/izTOw==}
     engines: {node: '>=0.10.0'}
     dev: true
 
@@ -5770,7 +5770,7 @@ packages:
     dependencies:
       '@types/node': 20.11.28
       esbuild: 0.18.20
-      postcss: 8.4.35
+      postcss: 8.4.36
       rollup: 3.29.4
     optionalDependencies:
       fsevents: 2.3.3
