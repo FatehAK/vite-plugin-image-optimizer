@@ -151,8 +151,8 @@ export function logOptimizationStats(rootConfig: ResolvedConfig, sizesMap: Map<s
   });
 
   if (totalSavedSize > 0) {
-    const savedText = `${totalSavedSize.toFixed(2)}kB`;
-    const originalText = `${totalOriginalSize.toFixed(2)}kB`;
+    const savedText = `${totalSavedSize.toFixed(2)} kB`;
+    const originalText = `${totalOriginalSize.toFixed(2)} kB`;
     const savingsPercent = `${Math.round((totalSavedSize / totalOriginalSize) * 100)}%`;
     rootConfig.logger.info(
       decideStyle(`\n💰 total savings = ${ansi.green(savedText)}/${ansi.green(originalText)} ≈ ${ansi.green(savingsPercent)}`, ansiColors)
@@ -161,7 +161,7 @@ export function logOptimizationStats(rootConfig: ResolvedConfig, sizesMap: Map<s
 
   Object.keys(totalConvertedFilesSize).forEach((format: string) => {
     rootConfig.logger.info(
-      decideStyle(`\nConverted to ${format} total size = ${ansi.green(totalConvertedFilesSize[format]).toFixed(2)} kB`, ansiColors)
+      decideStyle(`\nConverted to ${format} total size = ${ansi.green(totalConvertedFilesSize[format].toFixed(2) + ' kB')}`, ansiColors)
     );
   })
 
