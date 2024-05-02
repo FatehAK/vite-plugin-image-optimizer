@@ -93,7 +93,7 @@ const DEFAULT_OPTIONS = {
   includePublic: true,
   logStats: true,
   ansiColors: true,
-  convertAllTo: [],
+  convertAllTo: undefined,
   svg: {
     multipass: true,
     plugins: [
