@@ -2,7 +2,7 @@ export const VITE_PLUGIN_NAME = 'vite-plugin-image-optimizer';
 export const DEFAULT_OPTIONS = {
   logStats: true,
   ansiColors: true,
-  convertAllTo: [],
+  convertAllTo: undefined,
   includePublic: true,
   exclude: undefined,
   include: undefined,
@@ -60,4 +60,6 @@ export const DEFAULT_OPTIONS = {
     // https://sharp.pixelplumbing.com/api-output#avif
     lossless: true,
   },
+  cache: false,
+  cacheLocation: undefined,
 };

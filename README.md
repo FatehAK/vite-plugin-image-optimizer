@@ -147,6 +147,8 @@ const DEFAULT_OPTIONS = {
     // https://sharp.pixelplumbing.com/api-output#avif
     lossless: true,
   },
+  cache: false,
+  cacheLocation: undefined,
 };
 ```
 
@@ -166,6 +168,8 @@ const DEFAULT_OPTIONS = {
 - **[`gif`](#gif)**
 - **[`webp`](#webp)**
 - **[`avif`](#webp)**
+- **[`cache`](#cache)**
+- **[`cacheLocation`](#cache)**
 
 ### `test`
 
@@ -221,9 +225,9 @@ Logs the optimization stats or errors with ansi colors in the terminal. Set it t
 
 ### `convertAllTo`
 
-Type: `list of strings`
+Type: `string or list of strings`
 
-Default: `[]`
+Default: `undefined`
 
 Converts all assets to required formats
 
@@ -352,6 +356,22 @@ Default:
 ```
 
 Config object to pass to Sharp.js for assets with `avif` extension
+
+### `cache`
+
+Type: `boolean`
+
+Default: `false`
+
+Cache assets in `cacheLocation`. When enabled, reads and writes asset files with their hash suffix from the specified path.
+
+### `cacheLocation`
+
+Type: `String`
+
+Default: `undefined`
+
+Path to the cache directory. Can be used with GitHub Actions and other build servers that support cache directories to speed up consecutive builds.
 
 ## License
 

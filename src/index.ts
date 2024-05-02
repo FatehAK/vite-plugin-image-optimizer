@@ -3,10 +3,11 @@ import type { PngOptions, JpegOptions, TiffOptions, GifOptions, WebpOptions, Avi
 import type { Config as SVGOConfig } from 'svgo';
 import fs from 'fs';
 import fsp from 'fs/promises';
-import { extname, join, sep } from 'pathe';
+import { dirname, extname, join, sep } from 'pathe';
 import { filename } from 'pathe/utils';
 import { merge, readAllFiles, areFilesMatching, logErrors, logOptimizationStats } from './utils';
 import { VITE_PLUGIN_NAME, DEFAULT_OPTIONS } from './constants';
+import type { convertAllToOptions } from './types'
 
 interface Options {
   /**
@@ -24,7 +25,7 @@ interface Options {
   /**
    * convert all images to formats
    */
-  convertAllTo?: string[];
+  convertAllTo?: convertAllToOptions | convertAllToOptions[];
   /**
    * include assets in public dir or not
    */
@@ -69,6 +70,14 @@ interface Options {
    * sharp opts for avif
    */
   avif?: AvifOptions;
+  /**
+   * cache optimized images or not
+   */
+  cache?: boolean;
+  /**
+   * path to the cache directory
+   */
+  cacheLocation?: string;
 }
 
 function ViteImageOptimizer(optionsParam: Options = {}): Plugin {
@@ -77,10 +86,25 @@ function ViteImageOptimizer(optionsParam: Options = {}): Plugin {
   let outputPath: string;
   let publicDir: string;
   let rootConfig: ResolvedConfig;
+  let convertAllTo: convertAllToOptions[];
 
-  const sizesMap = new Map<string, { size: number; oldSize: number; ratio: number; skipWrite: boolean }>();
+  const sizesMap = new Map<string, { size: number; oldSize: number; ratio: number; skipWrite: boolean; isCached: boolean, toFileExt: string }>();
   const mtimeCache = new Map<string, number>();
   const errorsMap = new Map<string, string>();
+
+  if (options.convertAllTo) {
+    convertAllTo = typeof options.convertAllTo === 'string' ? [options.convertAllTo] : options.convertAllTo;
+    // check if formats are valid
+    convertAllTo.forEach((format: string) => {
+      if (format === 'svg') {
+        throw new Error('Cannot convert bitmap images to svg.'); 
+      }
+
+      if (!options[format]) {
+        throw new Error('Cannot convert images to unrecognized format: `${format}`');
+      }
+    })
+  }
 
   /* SVGO transformation */
   const applySVGO = async (filePath: string, buffer: Buffer): Promise<Buffer> => {
@@ -104,8 +128,40 @@ function ViteImageOptimizer(optionsParam: Options = {}): Plugin {
 
   const processFile = async (filePath: string, buffer: Buffer, toFileExt: string = null) => {
     try {
-      const engine: Function = /\.svg$/.test(filePath) ? applySVGO : applySharp;
-      const newBuffer: Buffer = await engine(filePath, buffer, toFileExt)
+      let newBuffer: Buffer;
+
+      let isCached: boolean;
+      let cachedFilePath = join(options.cacheLocation, filePath);
+      if (toFileExt) {
+        cachedFilePath += '.' + toFileExt;
+      }
+
+      if (options.cache === true && fs.existsSync(cachedFilePath)) {
+        // load buffer from cache (when enabled and available)
+        newBuffer = await fsp.readFile(cachedFilePath);
+        isCached = true;
+      } else {
+        // create buffer from engine
+        if (toFileExt === null) {
+          const engine = /\.svg$/.test(filePath) ? applySVGO : applySharp;
+          newBuffer = await engine(filePath, buffer);
+        
+        } else {
+          newBuffer = await applySharp(filePath, buffer, toFileExt);
+        }
+
+        isCached = false;
+      }
+
+      // store buffer in cache
+      if (options.cache === true && !isCached) {
+        if (!fs.existsSync(dirname(cachedFilePath))) {
+          await fsp.mkdir(dirname(cachedFilePath), { recursive: true });
+        }
+        await fsp.writeFile(cachedFilePath, newBuffer);
+      }
+
+      // calculate sizes
       const newSize: number = newBuffer.byteLength;
       const oldSize: number = buffer.byteLength;
       const skipWrite: boolean = newSize >= oldSize && !toFileExt;
@@ -115,6 +171,8 @@ function ViteImageOptimizer(optionsParam: Options = {}): Plugin {
         oldSize: oldSize / 1024,
         ratio: Math.floor(100 * (newSize / oldSize - 1)),
         skipWrite,
+        isCached,
+        toFileExt,
       });
 
       return { content: newBuffer, skipWrite };
@@ -147,6 +205,25 @@ function ViteImageOptimizer(optionsParam: Options = {}): Plugin {
     }, []);
   };
 
+  const ensureCacheDirectoryExists = async function () {
+    if (options.cache === true && !fs.existsSync(options.cacheLocation)) {
+      await fsp.mkdir(options.cacheLocation);
+    }
+  };
+
+  const convertFileToFormats = (filePath: string, buffer: Buffer) => {
+    if (!convertAllTo) return [];
+
+    const extName: string = extname(filePath).replace('.', '').toLowerCase();
+
+    return convertAllTo
+      .filter((format: string) => format !== extName)
+      .map(async (format: string) => {
+        const { content } = await processFile(filePath, buffer, format);
+        return { content, format }
+      })
+  }
+
   return {
     name: VITE_PLUGIN_NAME,
     enforce: 'post',
@@ -163,6 +240,8 @@ function ViteImageOptimizer(optionsParam: Options = {}): Plugin {
       const files: string[] = getFilesToProcess(allFiles, path => (bundler[path] as any).name);
 
       if (files.length > 0) {
+        await ensureCacheDirectoryExists();
+
         const handles = files.map(async (filePath: string) => {
           const source = (bundler[filePath] as any).source;
           const { content, skipWrite } = await processFile(filePath, source);
@@ -170,9 +249,9 @@ function ViteImageOptimizer(optionsParam: Options = {}): Plugin {
           if (content?.length && !skipWrite) {
             (bundler[filePath] as any).source = content;
           }
-
-          options.convertAllTo.forEach(async (format: string) => {
-            const { content } = await processFile(filePath, source, format);
+          
+          convertFileToFormats(filePath, source).forEach(async (converted) => {
+            const { content, format } = await converted;
             if (content?.length) {
               (bundler[filePath + '.' + format] as any).source = content;
             }
@@ -188,6 +267,8 @@ function ViteImageOptimizer(optionsParam: Options = {}): Plugin {
         const files: string[] = getFilesToProcess(allFiles, path => filename(path) + extname(path));
 
         if (files.length > 0) {
+          await ensureCacheDirectoryExists();
+
           const handles = files.map(async (publicFilePath: string) => {
             // convert the path to the output folder
             const filePath: string = publicFilePath.replace(publicDir + sep, '');
@@ -206,8 +287,8 @@ function ViteImageOptimizer(optionsParam: Options = {}): Plugin {
               mtimeCache.set(filePath, Date.now());
             }
 
-            options.convertAllTo.forEach(async (format: string) => {
-              const { content } = await processFile(filePath, buffer, format);
+            convertFileToFormats(filePath, buffer).forEach(async (converted) => {
+              const { content, format } = await converted;
               if (content?.length) {
                 await fsp.writeFile(fullFilePath + '.' + format, content);
                 mtimeCache.set(filePath + '.' + format, Date.now());
