@@ -101,7 +101,7 @@ function ViteImageOptimizer(optionsParam: Options = {}): Plugin {
       }
 
       if (!options[format]) {
-        throw new Error('Cannot convert images to unrecognized format: `${format}`');
+        throw new Error(`Cannot convert images to unrecognized format: ${format}`);
       }
     })
   }
