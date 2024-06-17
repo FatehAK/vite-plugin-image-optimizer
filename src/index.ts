@@ -182,7 +182,7 @@ function ViteImageOptimizer(optionsParam: Options = {}): Plugin {
 
   const ensureCacheDirectoryExists = async function () {
     if (options.cache === true && !fs.existsSync(options.cacheLocation)) {
-      await fsp.mkdir(options.cacheLocation);
+      await fsp.mkdir(options.cacheLocation, { recursive: true });
     }
   };
 
@@ -227,7 +227,7 @@ function ViteImageOptimizer(optionsParam: Options = {}): Plugin {
           const handles = files.map(async (publicFilePath: string) => {
             // convert the path to the output folder
             const filePath: string = publicFilePath.replace(publicDir + sep, '');
-            const fullFilePath: string = join(outputPath, filePath);
+            const fullFilePath: string = join(rootConfig.root, outputPath, filePath);
 
             if (fs.existsSync(fullFilePath) === false) return;
 
