@@ -62,8 +62,8 @@ devDependencies:
     specifier: ^15.11.0
     version: 15.11.0
   rimraf:
-    specifier: ^5.0.7
-    version: 5.0.8
+    specifier: ^5.0.9
+    version: 5.0.9
   rollup-plugin-visualizer:
     specifier: ^5.12.0
     version: 5.12.0
@@ -4918,9 +4918,9 @@ packages:
       glob: 7.2.3
     dev: true
 
-  /rimraf@5.0.8:
-    resolution: {integrity: sha512-XSh0V2/yNhDEi8HwdIefD8MLgs4LQXPag/nEJWs3YUc3Upn+UHa1GyIkEg9xSSNt7HnkO5FjTvmcRzgf+8UZuw==}
-    engines: {node: '>=18'}
+  /rimraf@5.0.9:
+    resolution: {integrity: sha512-3i7b8OcswU6CpU8Ej89quJD4O98id7TtVM5U4Mybh84zQXdrFmDLouWBEEaD/QfO3gDDfH+AGFCGsR7kngzQnA==}
+    engines: {node: 14 >=14.20 || 16 >=16.20 || >=18}
     hasBin: true
     dependencies:
       glob: 10.4.3
