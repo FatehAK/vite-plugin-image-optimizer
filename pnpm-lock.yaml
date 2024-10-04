@@ -26,8 +26,8 @@ devDependencies:
     specifier: ^8.2.2
     version: 8.2.2
   czg:
-    specifier: 1.9.4
-    version: 1.9.4
+    specifier: 1.10.0
+    version: 1.10.0
   eslint:
     specifier: ^8.57.1
     version: 8.57.1
@@ -1992,8 +1992,8 @@ packages:
       css-tree: 2.2.1
     dev: true
 
-  /czg@1.9.4:
-    resolution: {integrity: sha512-x9V/FXA3XUmK6PMvP2WC3WPTA4xAUCcjFcL6HxJSLUAn4gKshMHWLkIfWSCsEqmenn5IIX0/L7NuBJ7/luDqCA==}
+  /czg@1.10.0:
+    resolution: {integrity: sha512-RJqFwHtEoDe6eivsLXI1hrUTNRd7Fy16+wivm+q9C9VT6/uC+g77piaz27rcMVeqa5zmtTlWuSGr3svzqWe2WA==}
     engines: {node: '>=v12.20.0'}
     hasBin: true
     dev: true
