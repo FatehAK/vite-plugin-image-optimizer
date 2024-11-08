@@ -17,7 +17,7 @@ devDependencies:
     specifier: ^17.8.1
     version: 17.8.1
   '@types/node':
-    specifier: ^20.17.5
+    specifier: ^20.17.6
     version: 20.17.6
   '@typescript-eslint/parser':
     specifier: ^5.62.0
@@ -26,8 +26,8 @@ devDependencies:
     specifier: ^8.2.2
     version: 8.2.2
   czg:
-    specifier: 1.10.1
-    version: 1.10.1
+    specifier: 1.11.0
+    version: 1.11.0
   eslint:
     specifier: ^8.57.1
     version: 8.57.1
@@ -1956,8 +1956,8 @@ packages:
       css-tree: 2.2.1
     dev: true
 
-  /czg@1.10.1:
-    resolution: {integrity: sha512-melR80u+GA4EWNexwiWkbAPkFkxBqtLMQU4ePmnkF4N9F//8lB9mo1i0PmxphTamhn0N6kRAmnrkFrkRteNW8g==}
+  /czg@1.11.0:
+    resolution: {integrity: sha512-go39avnHPvDn1HF4LS1qxj5XPGCQexZ9+y8f+0VlE9plZgRyWUOl4rUCwE4vD1azouIhz/KaauB45A7jPfMxpw==}
     engines: {node: '>=v12.20.0'}
     hasBin: true
     dev: true
