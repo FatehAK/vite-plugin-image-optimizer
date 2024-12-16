@@ -18,7 +18,7 @@
 ## Features
 
 - Optimize SVG assets using [SVGO](https://github.com/lovell/sharp) and pass custom configs.
-- Optimize scalar assets (png, jpeg, gif, tiff, webp, avif) using [Sharp.js](https://github.com/lovell/sharp) with the option to pass custom configs for each extension type.
+- Optimize scalar assets (png, jpeg, gif, tiff, webp, avif) using [Sharp.js](https://github.com/lovell/sharp) with the option to pass custom configs for each extension type and resizing.
 - Option to process all assets from your `public` directory defined in the bundler.
 - Configure `test`, `include`, and `exclude` to filter assets.
 - Skip processing assets if their optimized size is greater than their original size.
@@ -145,6 +145,9 @@ const DEFAULT_OPTIONS = {
     // https://sharp.pixelplumbing.com/api-output#avif
     lossless: true,
   },
+  resize: {
+    // https://sharp.pixelplumbing.com/api-resize#resize
+  },
   cache: false,
   cacheLocation: undefined,
 };
@@ -165,6 +168,7 @@ const DEFAULT_OPTIONS = {
 - **[`gif`](#gif)**
 - **[`webp`](#webp)**
 - **[`avif`](#webp)**
+- **[`resize`](#resize)**
 - **[`cache`](#cache)**
 - **[`cacheLocation`](#cache)**
 
@@ -345,6 +349,14 @@ Default:
 ```
 
 Config object to pass to Sharp.js for assets with `avif` extension
+
+### `resize`
+
+Type: [`ResizeOptions`](https://github.com/lovell/sharp/blob/main/lib/index.d.ts#L1351)
+
+Default: `undefined`
+
+Config object to pass to Sharp.js for resizing scalar assets
 
 ### `cache`
 

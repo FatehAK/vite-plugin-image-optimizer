@@ -59,6 +59,8 @@ export const DEFAULT_OPTIONS = {
     // https://sharp.pixelplumbing.com/api-output#avif
     lossless: true,
   },
+  // https://sharp.pixelplumbing.com/api-resize#resize
+  resize: undefined,
   cache: false,
   cacheLocation: undefined,
 };
