@@ -100,13 +100,13 @@ const DEFAULT_OPTIONS = {
         params: {
           overrides: {
             cleanupNumericValues: false,
-            removeViewBox: false, // https://github.com/svg/svgo/issues/1128
+            removeViewBox: false, // https://github.com/svg/svgo/issues/1128,
+            cleanupIds: {
+              minify: false,
+              remove: false,
+            },
+            convertPathData: false,
           },
-          cleanupIDs: {
-            minify: false,
-            remove: false,
-          },
-          convertPathData: false,
         },
       },
       'sortAttrs',
