@@ -17,7 +17,7 @@ devDependencies:
     specifier: ^17.8.1
     version: 17.8.1
   '@types/node':
-    specifier: ^20.17.23
+    specifier: ^20.17.24
     version: 20.17.24
   '@typescript-eslint/parser':
     specifier: ^5.62.0
