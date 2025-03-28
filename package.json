@@ -58,7 +58,7 @@
   },
   "devDependencies": {
     "@commitlint/cli": "^17.8.1",
-    "@types/node": "^20.17.25",
+    "@types/node": "^20.17.28",
     "@typescript-eslint/parser": "^5.62.0",
     "concurrently": "^8.2.2",
     "czg": "1.11.1",
@@ -78,7 +78,7 @@
     "sharp": "^0.33.5",
     "svgo": "^3.3.2",
     "typescript": "^5.8.2",
-    "vite": "^4.5.9",
+    "vite": "^4.5.10",
     "vite-plugin-dts": "^2.3.0"
   },
   "peerDependencies": {
