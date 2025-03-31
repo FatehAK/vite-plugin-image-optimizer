@@ -3,7 +3,7 @@ import type { PngOptions, JpegOptions, TiffOptions, GifOptions, WebpOptions, Avi
 import type { Config as SVGOConfig } from 'svgo';
 import fs from 'fs';
 import fsp from 'fs/promises';
-import { dirname, extname, join, sep } from 'pathe';
+import { dirname, extname, join, resolve, sep } from 'pathe';
 import { filename } from 'pathe/utils';
 import { merge, readAllFiles, areFilesMatching, logErrors, logOptimizationStats } from './utils';
 import { VITE_PLUGIN_NAME, DEFAULT_OPTIONS } from './constants';
@@ -221,7 +221,7 @@ function ViteImageOptimizer(optionsParam: Options = {}): Plugin {
           const handles = files.map(async (publicFilePath: string) => {
             // convert the path to the output folder
             const filePath: string = publicFilePath.replace(publicDir + sep, '');
-            const fullFilePath: string = join(rootConfig.root, outputPath, filePath);
+            const fullFilePath: string = resolve(rootConfig.root, outputPath, filePath);
 
             if (fs.existsSync(fullFilePath) === false) return;
 
