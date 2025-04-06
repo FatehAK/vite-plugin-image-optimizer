@@ -790,8 +790,8 @@ packages:
       - '@types/node'
     dev: true
 
-  /@microsoft/api-extractor@7.52.2(@types/node@20.17.30):
-    resolution: {integrity: sha512-RX37V5uhBBPUvrrcmIxuQ8TPsohvr6zxo7SsLPOzBYcH9nbjbvtdXrts4cxHCXGOin9JR5ar37qfxtCOuEBTHA==}
+  /@microsoft/api-extractor@7.52.3(@types/node@20.17.30):
+    resolution: {integrity: sha512-QEs6l8h7p9eOSHrQ9NBBUZhUuq+j/2QKcRgigbSs2YQepKz8glvsqmsUOp+nvuaY60ps7KkpVVYQCj81WLoMVQ==}
     hasBin: true
     dependencies:
       '@microsoft/api-extractor-model': 7.30.5(@types/node@20.17.30)
@@ -4592,7 +4592,7 @@ packages:
       got: 12.6.1
       registry-auth-token: 5.1.0
       registry-url: 6.0.1
-      semver: 7.7.1
+      semver: 7.5.1
     dev: true
 
   /parent-module@1.0.1:
@@ -5115,7 +5115,7 @@ packages:
     resolution: {integrity: sha512-0Ju4+6A8iOnpL/Thra7dZsSlOHYAHIeMxfhWQRI1/VLcT3WDBZKKtQt/QkBOsiIN9ZpuvHE6cGZ0x4glCMmfiA==}
     engines: {node: '>=12'}
     dependencies:
-      semver: 7.7.1
+      semver: 7.5.1
     dev: true
 
   /semver@5.7.2:
@@ -5838,7 +5838,7 @@ packages:
       is-yarn-global: 0.4.1
       latest-version: 7.0.0
       pupa: 3.1.0
-      semver: 7.7.1
+      semver: 7.5.1
       semver-diff: 4.0.0
       xdg-basedir: 5.1.0
     dev: true
@@ -5881,7 +5881,7 @@ packages:
       vite: '>=2.9.0'
     dependencies:
       '@babel/parser': 7.27.0
-      '@microsoft/api-extractor': 7.52.2(@types/node@20.17.30)
+      '@microsoft/api-extractor': 7.52.3(@types/node@20.17.30)
       '@rollup/pluginutils': 5.1.4
       '@rushstack/node-core-library': 3.66.1(@types/node@20.17.30)
       debug: 4.4.0
