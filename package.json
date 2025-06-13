@@ -61,7 +61,7 @@
     "@types/node": "^20.19.0",
     "@typescript-eslint/parser": "^5.62.0",
     "concurrently": "^8.2.2",
-    "czg": "1.11.1",
+    "czg": "1.11.2",
     "eslint": "^8.57.1",
     "eslint-config-prettier": "^8.10.0",
     "eslint-config-semistandard": "^17.0.0",
