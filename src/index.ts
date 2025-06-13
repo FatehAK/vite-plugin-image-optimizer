@@ -75,7 +75,7 @@ interface Options {
   cacheLocation?: string;
 }
 
-function ViteImageOptimizer(optionsParam: Options = {}): Plugin {
+export default function ViteImageOptimizer(optionsParam: Options = {}): Plugin {
   const options: Options = merge(optionsParam, DEFAULT_OPTIONS);
 
   let outputPath: string;
@@ -248,5 +248,3 @@ function ViteImageOptimizer(optionsParam: Options = {}): Plugin {
     },
   };
 }
-
-export { ViteImageOptimizer };
