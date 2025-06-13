@@ -4,7 +4,7 @@ module.exports = {
     es2022: true,
     node: true,
   },
-  extends: ['semistandard', 'plugin:sonarjs/recommended', 'plugin:promise/recommended', 'prettier'],
+  extends: ['plugin:sonarjs/recommended-legacy', 'plugin:promise/recommended', 'prettier'],
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',

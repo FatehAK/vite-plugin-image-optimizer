@@ -9,6 +9,7 @@
     "allowSyntheticDefaultImports": true,
     "outDir": "dist",
     "lib": ["ESNext"],
+    "module": "ESNext",
     "skipLibCheck": true
   },
   "include": ["src/index.ts"]
