@@ -79,13 +79,14 @@ function decideStyle(text: string, enableColors: boolean) {
 }
 
 export function logErrors(rootConfig: ResolvedConfig, errorsMap: Map<string, string>, ansiColors: boolean) {
-  rootConfig.logger.info(decideStyle(`\n🚨 ${ansi.red('[vite-plugin-image-optimizer]')} - errors during optimization: `, ansiColors));
+  const logger = rootConfig?.logger ?? console;
+  logger.info(decideStyle(`\n🚨 ${ansi.red('[vite-plugin-image-optimizer]')} - errors during optimization: `, ansiColors));
 
   const keyLengths: number[] = Array.from(errorsMap.keys(), (name: string) => name.length);
   const maxKeyLength: number = Math.max(...keyLengths);
 
   errorsMap.forEach((message: string, name: string) => {
-    rootConfig.logger.error(
+    logger.error(
       decideStyle(
         `${ansi.dim(basename(rootConfig.build.outDir))}/${ansi.blueBright(name)}${' '.repeat(2 + maxKeyLength - name.length)} ${ansi.red(
           message
@@ -94,11 +95,13 @@ export function logErrors(rootConfig: ResolvedConfig, errorsMap: Map<string, str
       )
     );
   });
-  rootConfig.logger.info('\n');
+  logger.info('\n');
 }
 
 export function logOptimizationStats(rootConfig: ResolvedConfig, sizesMap: Map<string, Sizes>, ansiColors: boolean) {
-  rootConfig.logger.info(decideStyle(`\n✨ ${ansi.cyan('[vite-plugin-image-optimizer]')} - optimized images successfully: `, ansiColors));
+  const logger = rootConfig?.logger ?? console;
+  const outDir = rootConfig?.build?.outDir ?? 'dist';
+  logger.info(decideStyle(`\n✨ ${ansi.cyan('[vite-plugin-image-optimizer]')} - optimized images successfully: `, ansiColors));
 
   const keyLengths: number[] = Array.from(sizesMap.keys(), (name: string) => name.length);
   const valueLengths: number[] = Array.from(sizesMap.values(), (value: any) => `${Math.floor(100 * value.ratio)}`.length);
@@ -111,17 +114,27 @@ export function logOptimizationStats(rootConfig: ResolvedConfig, sizesMap: Map<s
   sizesMap.forEach((value, name) => {
     const { size, oldSize, ratio, skipWrite, isCached } = value;
 
-    const percentChange: string = ratio > 0 ? ansi.red(`+${ratio}%`) : ratio <= 0 ? ansi.green(`${ratio}%`) : '';
+    let percentChange: string;
+    if (ratio > 0) {
+      percentChange = ansi.red(`+${ratio}%`);
+    } else if (ratio < 0) {
+      percentChange = ansi.green(`${ratio}%`);
+    } else {
+      percentChange = ansi.dim(`${ratio}%`);
+    }
 
-    const sizeText: string = skipWrite
-      ? `${ansi.yellow.bold('skipped')} ${ansi.dim(`original: ${oldSize.toFixed(2)} kB <= optimized: ${size.toFixed(2)} kB`)}`
-      : isCached
-      ? `${ansi.yellow.bold('cached')} ${ansi.dim(`original: ${oldSize.toFixed(2)} kB; cached: ${size.toFixed(2)} kB`)}`
-      : ansi.dim(`${oldSize.toFixed(2)} kB ⭢  ${size.toFixed(2)} kB`);
+    let sizeText: string;
+    if (skipWrite) {
+      sizeText = `${ansi.yellow.bold('skipped')} ${ansi.dim(`original: ${oldSize.toFixed(2)} kB <= optimized: ${size.toFixed(2)} kB`)}`;
+    } else if (isCached) {
+      sizeText = `${ansi.yellow.bold('cached')} ${ansi.dim(`original: ${oldSize.toFixed(2)} kB; cached: ${size.toFixed(2)} kB`)}`;
+    } else {
+      sizeText = ansi.dim(`${oldSize.toFixed(2)} kB ⭢  ${size.toFixed(2)} kB`);
+    }
 
-    rootConfig.logger.info(
+    logger.info(
       decideStyle(
-        ansi.dim(basename(rootConfig.build.outDir)) +
+        ansi.dim(basename(outDir)) +
           '/' +
           ansi.blueBright(name) +
           ' '.repeat(2 + maxKeyLength - name.length) +
@@ -142,10 +155,10 @@ export function logOptimizationStats(rootConfig: ResolvedConfig, sizesMap: Map<s
     const savedText = `${totalSavedSize.toFixed(2)}kB`;
     const originalText = `${totalOriginalSize.toFixed(2)}kB`;
     const savingsPercent = `${Math.round((totalSavedSize / totalOriginalSize) * 100)}%`;
-    rootConfig.logger.info(
+    logger.info(
       decideStyle(`\n💰 total savings = ${ansi.green(savedText)}/${ansi.green(originalText)} ≈ ${ansi.green(savingsPercent)}`, ansiColors)
     );
   }
 
-  rootConfig.logger.info('\n');
+  logger.info('\n');
 }
