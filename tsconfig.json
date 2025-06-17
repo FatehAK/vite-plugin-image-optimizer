@@ -1,15 +1,28 @@
 {
   "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
     "moduleResolution": "node",
+    "outDir": "dist",
+    "lib": ["ESNext"],
+    "types": ["node"],
+
+    "allowJs": false,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
     "sourceMap": false,
-    "allowJs": true,
     "declaration": true,
     "emitDeclarationOnly": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "outDir": "dist",
-    "lib": ["ESNext"],
-    "skipLibCheck": true
+    "experimentalDecorators": true,
+
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "erasableSyntaxOnly": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedSideEffectImports": true
   },
-  "include": ["src/index.ts"]
+  "include": ["src/index.ts", "vite.config.ts"]
 }

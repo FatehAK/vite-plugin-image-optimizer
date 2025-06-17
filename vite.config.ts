@@ -1,5 +1,5 @@
 import { resolve } from 'path';
-import { defineConfig } from 'vite';
+import { defineConfig, type LibraryFormats } from 'vite';
 import { visualizer } from 'rollup-plugin-visualizer';
 import dts from 'vite-plugin-dts';
 import pkg from './package.json';
@@ -17,7 +17,7 @@ export default defineConfig(() => {
       lib: {
         entry: resolve(__dirname, 'src/index.ts'),
         name: 'ViteImageOptimizer',
-        formats: ['es', 'cjs'],
+        formats: ['es', 'cjs'] as LibraryFormats[],
         fileName: 'index',
       },
       rollupOptions: {
