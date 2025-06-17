@@ -66,7 +66,7 @@ npm install vite-plugin-image-optimizer --save-dev
 ## Usage
 
 ```js
-import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
+import ViteImageOptimizer from 'vite-plugin-image-optimizer';
 import { defineConfig } from 'vite';
 
 export default defineConfig(() => {

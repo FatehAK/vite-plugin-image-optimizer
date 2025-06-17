@@ -5,15 +5,15 @@
   "files": [
     "dist/"
   ],
+  "types": "./dist/index.d.ts",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
   "license": "MIT",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
-      "require": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+      "require": "./dist/index.js"
     },
     "./package.json": "./package.json"
   },
@@ -44,42 +44,42 @@
     "clean": "pnpm rimraf reports dist node_modules/.vite node_modules/.cache",
     "lint": "concurrently -g -n \"prettier,eslint\" -c \"bgGreen.bold,bgBlue.bold\" \"pnpm prettier-check\" \"pnpm eslint-check\"",
     "lint:fix": "pnpm eslint-fix && pnpm prettier-fix",
-    "prettier-check": "prettier --loglevel warn --cache --cache-strategy content --cache-location ./node_modules/.cache/.prettiercache --check .",
-    "prettier-fix": "prettier --loglevel warn --cache --cache-strategy content --cache-location ./node_modules/.cache/.prettiercache --write .",
-    "eslint-check": "eslint --max-warnings=25 --format=pretty --cache --cache-strategy content --cache-location ./node_modules/.cache/.eslintcache '{**/*,*}.{js,ts}'",
+    "prettier-check": "prettier --log-level warn --cache --cache-strategy content --cache-location ./node_modules/.cache/.prettiercache --check .",
+    "prettier-fix": "prettier --log-level warn --cache --cache-strategy content --cache-location ./node_modules/.cache/.prettiercache --write .",
+    "eslint-check": "eslint --max-warnings=25 --cache --cache-strategy content --cache-location ./node_modules/.cache/.eslintcache '{**/*,*}.{js,ts}'",
     "eslint-fix": "pnpm eslint-check --fix",
-    "prepare": "husky install",
+    "prepare": "husky",
     "lint-staged": "lint-staged",
     "cz": "czg"
   },
   "dependencies": {
     "ansi-colors": "^4.1.3",
-    "pathe": "^1.1.2"
+    "pathe": "^2.0.3"
   },
   "devDependencies": {
-    "@commitlint/cli": "^17.8.1",
-    "@types/node": "^20.19.0",
-    "@typescript-eslint/parser": "^5.62.0",
-    "concurrently": "^8.2.2",
+    "@commitlint/cli": "^19.8.1",
+    "@types/node": "^24.0.1",
+    "@typescript-eslint/parser": "^8.34.0",
+    "ajv": "^8.17.1",
+    "concurrently": "^9.1.2",
     "czg": "1.11.2",
     "eslint": "^8.57.1",
-    "eslint-config-prettier": "^8.10.0",
-    "eslint-config-semistandard": "^17.0.0",
-    "eslint-formatter-pretty": "^5.0.0",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-formatter-pretty": "^6.0.1",
     "eslint-plugin-only-warn": "^1.1.0",
-    "eslint-plugin-promise": "^6.6.0",
-    "eslint-plugin-sonarjs": "^0.25.1",
-    "husky": "^8.0.3",
-    "lint-staged": "^13.3.0",
-    "prettier": "^2.8.8",
-    "release-it": "^15.11.0",
-    "rimraf": "^5.0.10",
-    "rollup-plugin-visualizer": "^5.13.1",
+    "eslint-plugin-promise": "^7.2.1",
+    "eslint-plugin-sonarjs": "^3.0.2",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.1.0",
+    "prettier": "^3.5.3",
+    "release-it": "^19.0.3",
+    "rimraf": "^6.0.1",
+    "rollup-plugin-visualizer": "^6.0.3",
     "sharp": "^0.34.2",
     "svgo": "^3.3.2",
     "typescript": "^5.8.3",
-    "vite": "^4.5.14",
-    "vite-plugin-dts": "^2.3.0"
+    "vite": "^6.3.5",
+    "vite-plugin-dts": "^4.5.4"
   },
   "peerDependencies": {
     "vite": ">=3"
@@ -87,7 +87,7 @@
   "engines": {
     "node": ">=14"
   },
-  "packageManager": "pnpm@8.15.9",
+  "packageManager": "pnpm@10.12.1",
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
   }
