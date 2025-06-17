@@ -11,23 +11,25 @@ interface Sizes {
   isCached: boolean;
 }
 
+type Match = string | RegExp | string[];
+
 /* type utils */
-function isRegex(src) {
+function isRegex(src: Match) {
   return Object.prototype.toString.call(src) === '[object RegExp]';
 }
 
-function isString(src) {
+function isString(src: Match) {
   return Object.prototype.toString.call(src) === '[object String]';
 }
 
-function isArray(src) {
+function isArray(src: Match) {
   return Array.isArray(src);
 }
 
-export function merge(src, target) {
-  const deepClone = src => {
+export function merge(src: any, target: any) {
+  const deepClone = (src: any) => {
     if (typeof src !== 'object' || isRegex(src) || src === null) return src;
-    const target = Array.isArray(src) ? [] : {};
+    const target: any = Array.isArray(src) ? [] : {};
     for (const key in src) {
       const value = src[key];
       target[key] = deepClone(value);
@@ -44,8 +46,8 @@ export function merge(src, target) {
   return clone;
 }
 
-export function readAllFiles(root) {
-  let resultArr = [];
+export function readAllFiles(root: string) {
+  let resultArr: string[] = [];
   try {
     if (fs.existsSync(root)) {
       const stat = fs.lstatSync(root);
@@ -66,7 +68,7 @@ export function readAllFiles(root) {
   return resultArr;
 }
 
-export function areFilesMatching(fileName: string, matcher): boolean {
+export function areFilesMatching(fileName: string, matcher: any): boolean {
   if (isString(matcher)) return fileName === matcher;
   if (isRegex(matcher)) return matcher.test(fileName);
   if (isArray(matcher)) return matcher.includes(fileName);
@@ -78,27 +80,39 @@ function decideStyle(text: string, enableColors: boolean) {
   return enableColors ? text : ansi.unstyle(text);
 }
 
+function getLogger(rootConfig: ResolvedConfig) {
+  return rootConfig?.logger ?? console;
+}
+
+function getOutDir(rootConfig: ResolvedConfig) {
+  return rootConfig?.build?.outDir ?? 'dist';
+}
+
 export function logErrors(rootConfig: ResolvedConfig, errorsMap: Map<string, string>, ansiColors: boolean) {
-  rootConfig.logger.info(decideStyle(`\n🚨 ${ansi.red('[vite-plugin-image-optimizer]')} - errors during optimization: `, ansiColors));
+  const logger = getLogger(rootConfig);
+  const outDir = getOutDir(rootConfig);
+
+  logger.info(decideStyle(`\n🚨 ${ansi.red('[vite-plugin-image-optimizer]')} - errors during optimization: `, ansiColors));
 
   const keyLengths: number[] = Array.from(errorsMap.keys(), (name: string) => name.length);
   const maxKeyLength: number = Math.max(...keyLengths);
 
   errorsMap.forEach((message: string, name: string) => {
-    rootConfig.logger.error(
+    logger.error(
       decideStyle(
-        `${ansi.dim(basename(rootConfig.build.outDir))}/${ansi.blueBright(name)}${' '.repeat(2 + maxKeyLength - name.length)} ${ansi.red(
-          message
-        )}`,
+        `${ansi.dim(basename(outDir))}/${ansi.blueBright(name)}${' '.repeat(2 + maxKeyLength - name.length)} ${ansi.red(message)}`,
         ansiColors
       )
     );
   });
-  rootConfig.logger.info('\n');
+  logger.info('\n');
 }
 
 export function logOptimizationStats(rootConfig: ResolvedConfig, sizesMap: Map<string, Sizes>, ansiColors: boolean) {
-  rootConfig.logger.info(decideStyle(`\n✨ ${ansi.cyan('[vite-plugin-image-optimizer]')} - optimized images successfully: `, ansiColors));
+  const logger = getLogger(rootConfig);
+  const outDir = getOutDir(rootConfig);
+
+  logger.info(decideStyle(`\n✨ ${ansi.cyan('[vite-plugin-image-optimizer]')} - optimized images successfully: `, ansiColors));
 
   const keyLengths: number[] = Array.from(sizesMap.keys(), (name: string) => name.length);
   const valueLengths: number[] = Array.from(sizesMap.values(), (value: any) => `${Math.floor(100 * value.ratio)}`.length);
@@ -111,17 +125,27 @@ export function logOptimizationStats(rootConfig: ResolvedConfig, sizesMap: Map<s
   sizesMap.forEach((value, name) => {
     const { size, oldSize, ratio, skipWrite, isCached } = value;
 
-    const percentChange: string = ratio > 0 ? ansi.red(`+${ratio}%`) : ratio <= 0 ? ansi.green(`${ratio}%`) : '';
+    let percentChange: string;
+    if (ratio > 0) {
+      percentChange = ansi.red(`+${ratio}%`);
+    } else if (ratio <= 0) {
+      percentChange = ansi.green(`${ratio}%`);
+    } else {
+      percentChange = '';
+    }
 
-    const sizeText: string = skipWrite
-      ? `${ansi.yellow.bold('skipped')} ${ansi.dim(`original: ${oldSize.toFixed(2)} kB <= optimized: ${size.toFixed(2)} kB`)}`
-      : isCached
-      ? `${ansi.yellow.bold('cached')} ${ansi.dim(`original: ${oldSize.toFixed(2)} kB; cached: ${size.toFixed(2)} kB`)}`
-      : ansi.dim(`${oldSize.toFixed(2)} kB ⭢  ${size.toFixed(2)} kB`);
+    let sizeText: string;
+    if (skipWrite) {
+      sizeText = `${ansi.yellow.bold('skipped')} ${ansi.dim(`original: ${oldSize.toFixed(2)} kB <= optimized: ${size.toFixed(2)} kB`)}`;
+    } else if (isCached) {
+      sizeText = `${ansi.yellow.bold('cached')} ${ansi.dim(`original: ${oldSize.toFixed(2)} kB; cached: ${size.toFixed(2)} kB`)}`;
+    } else {
+      sizeText = ansi.dim(`${oldSize.toFixed(2)} kB ⭢  ${size.toFixed(2)} kB`);
+    }
 
-    rootConfig.logger.info(
+    logger.info(
       decideStyle(
-        ansi.dim(basename(rootConfig.build.outDir)) +
+        ansi.dim(basename(outDir)) +
           '/' +
           ansi.blueBright(name) +
           ' '.repeat(2 + maxKeyLength - name.length) +
@@ -142,10 +166,10 @@ export function logOptimizationStats(rootConfig: ResolvedConfig, sizesMap: Map<s
     const savedText = `${totalSavedSize.toFixed(2)}kB`;
     const originalText = `${totalOriginalSize.toFixed(2)}kB`;
     const savingsPercent = `${Math.round((totalSavedSize / totalOriginalSize) * 100)}%`;
-    rootConfig.logger.info(
+    logger.info(
       decideStyle(`\n💰 total savings = ${ansi.green(savedText)}/${ansi.green(originalText)} ≈ ${ansi.green(savingsPercent)}`, ansiColors)
     );
   }
 
-  rootConfig.logger.info('\n');
+  logger.info('\n');
 }
