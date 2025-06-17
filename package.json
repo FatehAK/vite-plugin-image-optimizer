@@ -58,10 +58,10 @@
   },
   "devDependencies": {
     "@commitlint/cli": "^17.8.1",
-    "@types/node": "^20.17.14",
+    "@types/node": "^20.19.0",
     "@typescript-eslint/parser": "^5.62.0",
     "concurrently": "^8.2.2",
-    "czg": "1.11.0",
+    "czg": "1.11.2",
     "eslint": "^8.57.1",
     "eslint-config-prettier": "^8.10.0",
     "eslint-config-semistandard": "^17.0.0",
@@ -75,10 +75,10 @@
     "release-it": "^15.11.0",
     "rimraf": "^5.0.10",
     "rollup-plugin-visualizer": "^5.13.1",
-    "sharp": "^0.33.5",
+    "sharp": "^0.34.2",
     "svgo": "^3.3.2",
-    "typescript": "^5.7.3",
-    "vite": "^4.5.5",
+    "typescript": "^5.8.3",
+    "vite": "^4.5.14",
     "vite-plugin-dts": "^2.3.0"
   },
   "peerDependencies": {
