@@ -1,5 +1,5 @@
 import type { Plugin, ResolvedConfig } from 'vite';
-import type { PngOptions, JpegOptions, TiffOptions, GifOptions, WebpOptions, AvifOptions, FormatEnum } from 'sharp';
+import type { PngOptions, JpegOptions, TiffOptions, GifOptions, WebpOptions, AvifOptions, ResizeOptions, FormatEnum } from 'sharp';
 import type { Config as SVGOConfig } from 'svgo';
 import fs from 'fs';
 import fsp from 'fs/promises';
@@ -66,6 +66,10 @@ interface Options {
    */
   avif?: AvifOptions;
   /**
+   * sharp opts for resizing
+   */
+  resize?: ResizeOptions;
+  /**
    * cache optimized images or not
    */
   cache?: boolean;
@@ -101,9 +105,11 @@ function ViteImageOptimizer(optionsParam: Options = {}): Plugin {
   const applySharp = async (filePath: string, buffer: Buffer): Promise<Buffer> => {
     const sharp = (await import('sharp')).default;
     const extName: string = extname(filePath).replace('.', '').toLowerCase();
-    return await sharp(buffer, { animated: extName === 'gif' })
-      .toFormat(extName as keyof FormatEnum, options[extName])
-      .toBuffer();
+    let inputBuffer = sharp(buffer, { animated: extName === 'gif' });
+    if (options.resize) {
+      inputBuffer = inputBuffer.resize(options.resize);
+    }
+    return await inputBuffer.toFormat(extName as keyof FormatEnum, options[extName]).toBuffer();
   };
 
   const processFile = async (filePath: string, buffer: Buffer) => {
