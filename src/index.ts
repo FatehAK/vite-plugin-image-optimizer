@@ -102,7 +102,20 @@ function ViteImageOptimizer(optionsParam: Options = {}): Plugin {
     const sharp = (await import('sharp')).default;
     const extName: string = extname(filePath).replace('.', '').toLowerCase();
     return await sharp(buffer, { animated: extName === 'gif' })
-      .toFormat(extName as keyof FormatEnum, options[extName])
+      .toFormat(
+        extName as keyof FormatEnum,
+        options[
+          extName as keyof {
+            png: PngOptions;
+            jpeg: JpegOptions;
+            jpg: JpegOptions;
+            tiff: TiffOptions;
+            gif: GifOptions;
+            webp: WebpOptions;
+            avif: AvifOptions;
+          }
+        ]
+      )
       .toBuffer();
   };
 
@@ -111,7 +124,7 @@ function ViteImageOptimizer(optionsParam: Options = {}): Plugin {
       let newBuffer: Buffer;
 
       let isCached: boolean;
-      const cachedFilePath = join(options.cacheLocation, filePath);
+      const cachedFilePath = join(options.cacheLocation ?? '', filePath);
       if (options.cache === true && fs.existsSync(cachedFilePath)) {
         // load buffer from cache (when enabled and available)
         newBuffer = await fsp.readFile(cachedFilePath);
@@ -145,7 +158,7 @@ function ViteImageOptimizer(optionsParam: Options = {}): Plugin {
       });
 
       return { content: newBuffer, skipWrite };
-    } catch (error) {
+    } catch (error: any) {
       errorsMap.set(filePath, error.message);
       return {};
     }
@@ -160,7 +173,7 @@ function ViteImageOptimizer(optionsParam: Options = {}): Plugin {
           acc.push(filePath);
         }
         return acc;
-      }, []);
+      }, [] as string[]);
     }
 
     return allFiles.reduce((acc, filePath) => {
@@ -171,11 +184,11 @@ function ViteImageOptimizer(optionsParam: Options = {}): Plugin {
         }
       }
       return acc;
-    }, []);
+    }, [] as string[]);
   };
 
   const ensureCacheDirectoryExists = async function () {
-    if (options.cache === true && !fs.existsSync(options.cacheLocation)) {
+    if (options.cache === true && options.cacheLocation && !fs.existsSync(options.cacheLocation)) {
       await fsp.mkdir(options.cacheLocation, { recursive: true });
     }
   };
@@ -193,7 +206,7 @@ function ViteImageOptimizer(optionsParam: Options = {}): Plugin {
     },
     generateBundle: async (_, bundler) => {
       const allFiles: string[] = Object.keys(bundler);
-      const files: string[] = getFilesToProcess(allFiles, path => (bundler[path] as any).name);
+      const files: string[] = getFilesToProcess(allFiles, (path: string) => (bundler[path] as any).name);
 
       if (files.length > 0) {
         await ensureCacheDirectoryExists();
@@ -202,7 +215,7 @@ function ViteImageOptimizer(optionsParam: Options = {}): Plugin {
           const source = (bundler[filePath] as any).source;
           const { content, skipWrite } = await processFile(filePath, source);
           // write the file only if its optimized size < original size
-          if (content?.length > 0 && !skipWrite) {
+          if (content && content.length > 0 && !skipWrite) {
             (bundler[filePath] as any).source = content;
           }
         });
@@ -213,7 +226,7 @@ function ViteImageOptimizer(optionsParam: Options = {}): Plugin {
       if (publicDir && options.includePublic) {
         // find static images in the original static folder
         const allFiles: string[] = readAllFiles(publicDir);
-        const files: string[] = getFilesToProcess(allFiles, path => filename(path) + extname(path));
+        const files: string[] = getFilesToProcess(allFiles, (path: string) => filename(path) + extname(path));
 
         if (files.length > 0) {
           await ensureCacheDirectoryExists();
@@ -231,7 +244,7 @@ function ViteImageOptimizer(optionsParam: Options = {}): Plugin {
             const buffer: Buffer = await fsp.readFile(fullFilePath);
             const { content, skipWrite } = await processFile(filePath, buffer);
             // write the file only if its optimized size < original size
-            if (content?.length > 0 && !skipWrite) {
+            if (content && content?.length > 0 && !skipWrite) {
               await fsp.writeFile(fullFilePath, content);
               mtimeCache.set(filePath, Date.now());
             }
@@ -240,10 +253,10 @@ function ViteImageOptimizer(optionsParam: Options = {}): Plugin {
         }
       }
       if (sizesMap.size > 0 && options.logStats) {
-        logOptimizationStats(rootConfig, sizesMap, options.ansiColors);
+        logOptimizationStats(rootConfig, sizesMap, options.ansiColors ?? true);
       }
       if (errorsMap.size > 0) {
-        logErrors(rootConfig, errorsMap, options.ansiColors);
+        logErrors(rootConfig, errorsMap, options.ansiColors ?? true);
       }
     },
   };
