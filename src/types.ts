@@ -1,0 +1,1 @@
+export type convertAllToOptions = 'jpg' | 'jpeg' | 'png' | 'gif' | 'tiff' | 'webp' | 'avif';

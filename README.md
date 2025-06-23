@@ -20,6 +20,7 @@
 - Optimize SVG assets using [SVGO](https://github.com/lovell/sharp) and pass custom configs.
 - Optimize scalar assets (png, jpeg, gif, tiff, webp, avif) using [Sharp.js](https://github.com/lovell/sharp) with the option to pass custom configs for each extension type.
 - Option to process all assets from your `public` directory defined in the bundler.
+- Option to convert all assets to different formats
 - Configure `test`, `include`, and `exclude` to filter assets.
 - Skip processing assets if their optimized size is greater than their original size.
 - Log the optimization stats showing the before and after size difference, ratio and total savings (optional)
@@ -92,6 +93,7 @@ const DEFAULT_OPTIONS = {
   includePublic: true,
   logStats: true,
   ansiColors: true,
+  convertAllTo: undefined,
   svg: {
     multipass: true,
     plugins: [
@@ -158,6 +160,7 @@ const DEFAULT_OPTIONS = {
 - **[`includePublic`](#includepublic)**
 - **[`logStats`](#logstats)**
 - **[`ansiColors`](#ansiColors)**
+- **[`convertAllTo`](#convertAllTo)**
 - **[`svg`](#svg)**
 - **[`png`](#png)**
 - **[`jpeg`](#jpeg)**
@@ -219,6 +222,14 @@ Type: `boolean`
 Default: `true`
 
 Logs the optimization stats or errors with ansi colors in the terminal. Set it to `false` for shells that don't support color text.
+
+### `convertAllTo`
+
+Type: `string or list of strings`
+
+Default: `undefined`
+
+Converts all assets to required formats
 
 ### `svg`
 

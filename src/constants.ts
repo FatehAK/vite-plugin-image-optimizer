@@ -33,6 +33,7 @@ const SVGO_CONFIG: SVGOConfig = {
 export const DEFAULT_OPTIONS = {
   logStats: true,
   ansiColors: true,
+  convertAllTo: undefined,
   includePublic: true,
   exclude: undefined,
   include: undefined,

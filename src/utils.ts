@@ -9,6 +9,7 @@ interface Sizes {
   ratio: number;
   skipWrite: boolean;
   isCached: boolean;
+  toFileExt: string;
 }
 
 /* type utils */
@@ -108,16 +109,19 @@ export function logOptimizationStats(rootConfig: ResolvedConfig, sizesMap: Map<s
 
   let totalOriginalSize: number = 0;
   let totalSavedSize: number = 0;
+  
+  const totalConvertedFilesSize = {} 
+    
   sizesMap.forEach((value, name) => {
-    const { size, oldSize, ratio, skipWrite, isCached } = value;
+    const { size, oldSize, ratio, skipWrite, isCached, toFileExt } = value;
 
     const percentChange: string = ratio > 0 ? ansi.red(`+${ratio}%`) : ratio <= 0 ? ansi.green(`${ratio}%`) : '';
 
     const sizeText: string = skipWrite
       ? `${ansi.yellow.bold('skipped')} ${ansi.dim(`original: ${oldSize.toFixed(2)} kB <= optimized: ${size.toFixed(2)} kB`)}`
       : isCached
-      ? `${ansi.yellow.bold('cached')} ${ansi.dim(`original: ${oldSize.toFixed(2)} kB; cached: ${size.toFixed(2)} kB`)}`
-      : ansi.dim(`${oldSize.toFixed(2)} kB ⭢  ${size.toFixed(2)} kB`);
+      ? (toFileExt ? ansi.cyan.bold(`converted to ${toFileExt} `) : '') + `${ansi.yellow.bold('cached')} ${ansi.dim(`original: ${oldSize.toFixed(2)} kB; cached: ${size.toFixed(2)} kB`)}`
+      : (toFileExt ? ansi.cyan.bold(`converted to ${toFileExt} `) : '') + ansi.dim(`${oldSize.toFixed(2)} kB ⭢ ${size.toFixed(2)} kB`);
 
     rootConfig.logger.info(
       decideStyle(
@@ -133,19 +137,33 @@ export function logOptimizationStats(rootConfig: ResolvedConfig, sizesMap: Map<s
     );
 
     if (!skipWrite) {
-      totalOriginalSize += oldSize;
-      totalSavedSize += oldSize - size;
+      if (!toFileExt) {
+        totalOriginalSize += oldSize;
+        totalSavedSize += oldSize - size;
+      } else {
+        if (!totalConvertedFilesSize[toFileExt]) {
+          totalConvertedFilesSize[toFileExt] = size
+        } else {
+          totalConvertedFilesSize[toFileExt] += size
+        }
+      }
     }
   });
 
   if (totalSavedSize > 0) {
-    const savedText = `${totalSavedSize.toFixed(2)}kB`;
-    const originalText = `${totalOriginalSize.toFixed(2)}kB`;
+    const savedText = `${totalSavedSize.toFixed(2)} kB`;
+    const originalText = `${totalOriginalSize.toFixed(2)} kB`;
     const savingsPercent = `${Math.round((totalSavedSize / totalOriginalSize) * 100)}%`;
     rootConfig.logger.info(
       decideStyle(`\n💰 total savings = ${ansi.green(savedText)}/${ansi.green(originalText)} ≈ ${ansi.green(savingsPercent)}`, ansiColors)
     );
   }
+
+  Object.keys(totalConvertedFilesSize).forEach((format: string) => {
+    rootConfig.logger.info(
+      decideStyle(`\nConverted to ${format} total size = ${ansi.green(totalConvertedFilesSize[format].toFixed(2) + ' kB')}`, ansiColors)
+    );
+  })
 
   rootConfig.logger.info('\n');
 }
