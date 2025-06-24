@@ -1,5 +1,5 @@
-// refer: https://github.com/release-it/release-it/tree/master/docs
-module.exports = {
+/** @type {import('release-it').Config} */
+export default {
   git: {
     requireBranch: 'main',
     commitMessage: 'chore: Release v${version}',

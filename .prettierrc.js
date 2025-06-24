@@ -1,8 +1,8 @@
 /**
  * @see https://prettier.io/docs/configuration
- * @type {import("prettier").Config}
+ * @type {import('prettier').Config}
  */
-module.exports = {
+export default {
   trailingComma: 'es5',
   semi: true,
   singleQuote: true,

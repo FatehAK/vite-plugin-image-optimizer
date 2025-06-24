@@ -1,5 +1,5 @@
 /** @type {import('cz-git').UserConfig} */
-module.exports = {
+export default {
   rules: {
     'type-enum': [2, 'always', ['feat', 'fix', 'build', 'chore', 'ci', 'docs', 'revert']],
     'type-case': [2, 'always', 'lower-case'],

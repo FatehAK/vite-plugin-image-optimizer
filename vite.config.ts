@@ -4,6 +4,7 @@ import { visualizer } from 'rollup-plugin-visualizer';
 import dts from 'vite-plugin-dts';
 import pkg from './package.json';
 
+/** @type {import('vite').UserConfig} */
 export default defineConfig(() => {
   return {
     plugins: [
