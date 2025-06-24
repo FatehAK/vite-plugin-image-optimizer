@@ -20,7 +20,6 @@ export default defineConfig([
       globals: {
         ...globals.node,
       },
-
       ecmaVersion: 'latest',
       sourceType: 'module',
       parserOptions: {},
