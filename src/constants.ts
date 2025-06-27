@@ -11,7 +11,6 @@ const SVGO_CONFIG: SVGOConfig = {
       params: {
         overrides: {
           cleanupNumericValues: false,
-          removeViewBox: false, // https://github.com/svg/svgo/issues/1128
           cleanupIds: {
             minify: false,
             remove: false,
