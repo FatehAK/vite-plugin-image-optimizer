@@ -87,12 +87,12 @@ The default configuration is made for lossless compression of image assets.
 
 ```js
 const DEFAULT_OPTIONS = {
+  logStats: true,
+  ansiColors: true,
   test: /\.(jpe?g|png|gif|tiff|webp|svg|avif)$/i,
   exclude: undefined,
   include: undefined,
   includePublic: true,
-  logStats: true,
-  ansiColors: true,
   svg: {
     multipass: true,
     plugins: [
@@ -101,7 +101,6 @@ const DEFAULT_OPTIONS = {
         params: {
           overrides: {
             cleanupNumericValues: false,
-            removeViewBox: false, // https://github.com/svg/svgo/issues/1128,
             cleanupIds: {
               minify: false,
               remove: false,
