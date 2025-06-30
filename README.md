@@ -18,7 +18,7 @@
 ## Features
 
 - Optimize SVG assets using [SVGO](https://github.com/svg/svgo) and pass custom configs.
-- Optimize scalar assets (png, jpeg, gif, tiff, webp, avif) using [Sharp.js](https://github.com/lovell/sharp) with the option to pass custom configs for each extension type.
+- Optimize Raster assets (png, jpeg, gif, tiff, webp, avif) using [Sharp.js](https://github.com/lovell/sharp) with the option to pass custom configs for each extension type.
 - Option to process all assets from your `public` directory defined in the bundler.
 - Configure `test`, `include`, and `exclude` to filter assets.
 - Caching support to avoid re-optimization (optional)
