@@ -90,7 +90,17 @@
     "vite-plugin-dts": "^4.5.4"
   },
   "peerDependencies": {
-    "vite": ">=5"
+    "vite": ">=5",
+    "svgo": ">=4",
+    "sharp": ">=0.34.0"
+  },
+  "peerDependenciesMeta": {
+    "svgo": {
+      "optional": true
+    },
+    "sharp": {
+      "optional": true
+    }
   },
   "engines": {
     "node": ">=18.17.0"
