@@ -67,7 +67,7 @@
     "@eslint/eslintrc": "^3.3.1",
     "@eslint/js": "^9.30.0",
     "@types/node": "^24.0.6",
-    "@typescript-eslint/parser": "^8.35.0",
+    "@typescript-eslint/parser": "^8.35.1",
     "concurrently": "^9.2.0",
     "cz-git": "^1.11.2",
     "eslint": "^9.30.0",
