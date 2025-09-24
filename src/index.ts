@@ -169,7 +169,7 @@ function ViteImageOptimizer(optionsParam: Options = {}): Plugin {
     if (options.include) {
       return allFiles.reduce((acc, filePath) => {
         const fileName: string = getFileName(filePath);
-        if (areFilesMatching(fileName, options.include)) {
+        if (areFilesMatching(fileName, filePath, options.include)) {
           acc.push(filePath);
         }
         return acc;
@@ -179,7 +179,7 @@ function ViteImageOptimizer(optionsParam: Options = {}): Plugin {
     return allFiles.reduce((acc, filePath) => {
       if (options.test?.test(filePath)) {
         const fileName: string = getFileName(filePath);
-        if (!areFilesMatching(fileName, options.exclude)) {
+        if (!areFilesMatching(fileName, filePath, options.exclude)) {
           acc.push(filePath);
         }
       }
