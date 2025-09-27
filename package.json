@@ -78,7 +78,7 @@
     "eslint-plugin-sonarjs": "^3.0.5",
     "globals": "^16.4.0",
     "husky": "^9.1.7",
-    "lint-staged": "^16.1.6",
+    "lint-staged": "^16.2.1",
     "prettier": "^3.6.2",
     "release-it": "^19.0.5",
     "rimraf": "^6.0.1",
@@ -105,7 +105,7 @@
   "engines": {
     "node": ">=18.17.0"
   },
-  "packageManager": "pnpm@10.17.0",
+  "packageManager": "pnpm@10.17.1",
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
   }
