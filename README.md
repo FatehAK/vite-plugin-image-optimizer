@@ -182,7 +182,7 @@ Type: `String` | `RegExp` | `Array<string>`
 
 Default: `undefined`
 
-Files to exclude.
+Files to exclude. `RegExp` can be used on the source path to exclude a particular folder (`exclude: /textures/`).
 
 ### `include`
 
@@ -190,7 +190,7 @@ Type: `String` | `RegExp` | `Array<string>`
 
 Default: `undefined`
 
-Files to include.
+Files to include. `RegExp` can be used on the source path to include a particular folder (`include: /textures/`).
 
 > **Warning**
 >

@@ -68,9 +68,9 @@ export function readAllFiles(root: string) {
   return resultArr;
 }
 
-export function areFilesMatching(fileName: string, matcher: any): boolean {
+export function areFilesMatching(fileName: string, filePath: string, matcher: any): boolean {
   if (isString(matcher)) return fileName === matcher;
-  if (isRegex(matcher)) return matcher.test(fileName);
+  if (isRegex(matcher)) return matcher.test(filePath);
   if (isArray(matcher)) return matcher.includes(fileName);
   return false;
 }
