@@ -79,8 +79,8 @@
     "globals": "^16.5.0",
     "husky": "^9.1.7",
     "lint-staged": "^16.2.7",
-    "prettier": "^3.8.0",
-    "release-it": "^19.2.3",
+    "prettier": "^3.8.1",
+    "release-it": "^19.2.4",
     "rimraf": "^6.1.2",
     "rollup-plugin-visualizer": "^6.0.5",
     "sharp": "^0.34.5",
@@ -105,7 +105,7 @@
   "engines": {
     "node": ">=18.17.0"
   },
-  "packageManager": "pnpm@10.28.0",
+  "packageManager": "pnpm@10.28.1",
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
   }
