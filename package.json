@@ -66,7 +66,7 @@
     "@commitlint/types": "^19.8.1",
     "@eslint/eslintrc": "^3.3.3",
     "@eslint/js": "^9.39.2",
-    "@types/node": "^24.10.11",
+    "@types/node": "^24.10.13",
     "@typescript-eslint/parser": "^8.54.0",
     "concurrently": "^9.2.1",
     "cz-git": "^1.12.0",
@@ -75,7 +75,7 @@
     "eslint-formatter-pretty": "^6.0.1",
     "eslint-plugin-only-warn": "^1.1.0",
     "eslint-plugin-promise": "^7.2.1",
-    "eslint-plugin-sonarjs": "^3.0.6",
+    "eslint-plugin-sonarjs": "^3.0.7",
     "globals": "^16.5.0",
     "husky": "^9.1.7",
     "lint-staged": "^16.2.7",
@@ -105,7 +105,7 @@
   "engines": {
     "node": ">=18.17.0"
   },
-  "packageManager": "pnpm@10.28.2",
+  "packageManager": "pnpm@10.29.3",
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
   }
