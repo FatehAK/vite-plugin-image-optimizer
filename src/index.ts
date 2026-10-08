@@ -77,6 +77,9 @@ interface Options {
 
 function ViteImageOptimizer(optionsParam: Options = {}): Plugin {
   const options: Options = merge(optionsParam, DEFAULT_OPTIONS);
+  if (process.env.NO_COLOR === '1') {
+    options.ansiColors = false;
+  }
 
   let outputPath: string;
   let publicDir: string;
