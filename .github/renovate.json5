@@ -1,6 +1,6 @@
 {
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
-  extends: ["config:base"],
+  extends: ["config:recommended"],
   labels: ["dependencies"],
   timezone: "Asia/Kolkata",
   schedule: ["before 11am on saturday"],
@@ -8,13 +8,15 @@
   rangeStrategy: "bump",
   commitMessagePrefix: "chore(deps): ",
   commitBodyTable: true,
-  dependencyDashboard: true,
-  dependencyDashboardAutoclose: true,
+  dependencyDashboard: {
+    enabled: true,
+    autoclose: true,
+  },
   configMigration: true,
   automerge: true,
   automergeType: "branch",
   automergeStrategy: "rebase",
-  platformCommit: true,
+  platformCommit: "enabled",
   lockFileMaintenance: {
     enabled: true,
   },
